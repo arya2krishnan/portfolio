@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { LuGithub, LuLinkedin, LuMail, LuMapPin, LuTrophy } from "react-icons/lu";
 import { personalInfo } from "@/data/resume";
 import NowPlaying from "@/components/NowPlaying";
@@ -13,6 +13,7 @@ export default function Hero() {
   const [showCursor, setShowCursor] = useState(true);
   const [clickCount, setClickCount] = useState(0);
   const [showAchievement, setShowAchievement] = useState(false);
+  const [pfpEnlarged, setPfpEnlarged] = useState(false);
 
   const locations = ["SF", "NYC", "Berkeley", "Fremont"];
   const locIndexRef = useRef(0);
@@ -116,7 +117,10 @@ export default function Hero() {
         >
           {/* Profile picture */}
           <div className="mb-4 md:mb-5">
-            <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full overflow-hidden border-2 border-emerald-400/30 shadow-[0_0_20px_rgba(34,211,238,0.15)]">
+            <div
+              onClick={() => setPfpEnlarged(true)}
+              className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full overflow-hidden border-2 border-emerald-400/30 shadow-[0_0_20px_rgba(52,211,153,0.15)] cursor-pointer hover:border-emerald-400/60 transition-all"
+            >
               <Image
                 src="/images/arya-profile.jpg"
                 alt="Arya Krishnan"
@@ -186,6 +190,38 @@ export default function Hero() {
           </div>
         </motion.div>
       </div>
+
+      {/* Enlarged profile picture overlay */}
+      <AnimatePresence>
+        {pfpEnlarged && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-sm"
+            onClick={() => setPfpEnlarged(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.3, borderRadius: "9999px" }}
+              animate={{ scale: 1, borderRadius: "9999px" }}
+              exit={{ scale: 0.3, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 260, damping: 25 }}
+              className="w-72 h-72 sm:w-80 sm:h-80 md:w-96 md:h-96 rounded-full overflow-hidden border-2 border-emerald-400/30 shadow-[0_0_60px_rgba(52,211,153,0.2)]"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Image
+                src="/images/arya-profile.jpg"
+                alt="Arya Krishnan"
+                width={384}
+                height={384}
+                className="w-full h-full object-cover"
+                priority
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Achievement toast */}
       {showAchievement && (
