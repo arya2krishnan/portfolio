@@ -30,7 +30,7 @@ export async function GET() {
           track: track.name,
           artist: track.artist["#text"],
           album: track.album["#text"],
-          albumArt: track.image?.[2]?.["#text"] || null,
+          albumArt: track.image?.[2]?.["#text"] || undefined,
           url: track.url,
         } satisfies NowPlayingResponse);
       }
@@ -45,7 +45,7 @@ export async function GET() {
     track: "Connect Last.fm to see live data",
     artist: "Set LASTFM_API_KEY and LASTFM_USERNAME in .env.local",
     album: "",
-    albumArt: null,
-    url: null,
+    albumArt: undefined,
+    url: undefined,
   } satisfies NowPlayingResponse);
 }
