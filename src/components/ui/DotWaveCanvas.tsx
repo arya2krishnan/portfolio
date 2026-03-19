@@ -92,6 +92,10 @@ export default function DotWaveCanvas({ className = "" }: DotWaveCanvasProps) {
       animationId = requestAnimationFrame(draw);
     }
 
+    // Listen on the parent section (not the canvas) so mouse events
+    // aren't blocked by content layers sitting above the canvas.
+    const parentSection = canvas!.closest("section") || canvas!.parentElement;
+
     function handleMouseMove(e: MouseEvent) {
       const rect = canvas!.getBoundingClientRect();
       mouseX = e.clientX - rect.left;
@@ -132,19 +136,23 @@ export default function DotWaveCanvas({ className = "" }: DotWaveCanvasProps) {
     resize();
     animationId = requestAnimationFrame(draw);
 
-    canvas.addEventListener("mousemove", handleMouseMove);
-    canvas.addEventListener("mouseleave", handleMouseLeave);
-    canvas.addEventListener("touchmove", handleTouchMove, { passive: true });
-    canvas.addEventListener("touchend", handleTouchEnd);
+    if (parentSection) {
+      parentSection.addEventListener("mousemove", handleMouseMove as EventListener);
+      parentSection.addEventListener("mouseleave", handleMouseLeave);
+      parentSection.addEventListener("touchmove", handleTouchMove as EventListener, { passive: true });
+      parentSection.addEventListener("touchend", handleTouchEnd);
+    }
     window.addEventListener("resize", handleResize);
 
     return () => {
       cancelAnimationFrame(animationId);
       clearTimeout(resizeTimeout);
-      canvas.removeEventListener("mousemove", handleMouseMove);
-      canvas.removeEventListener("mouseleave", handleMouseLeave);
-      canvas.removeEventListener("touchmove", handleTouchMove);
-      canvas.removeEventListener("touchend", handleTouchEnd);
+      if (parentSection) {
+        parentSection.removeEventListener("mousemove", handleMouseMove as EventListener);
+        parentSection.removeEventListener("mouseleave", handleMouseLeave);
+        parentSection.removeEventListener("touchmove", handleTouchMove as EventListener);
+        parentSection.removeEventListener("touchend", handleTouchEnd);
+      }
       window.removeEventListener("resize", handleResize);
     };
   }, []);

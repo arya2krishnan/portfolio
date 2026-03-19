@@ -228,23 +228,28 @@ export const hobbies: Hobby[] = [
   { name: "Swimming", icon: "waves" },
 ];
 
+export interface TravelPhoto {
+  src: string;
+  alt: string;
+}
+
 export interface TravelDestination {
   location: string;
   country: string;
-  placeholder: string;
+  photos: TravelPhoto[];
 }
 
 export const travels: TravelDestination[] = [
-  { location: "Tokyo, Kyoto & Osaka", country: "Japan", placeholder: "Travel photo placeholder" },
-  { location: "Phuket", country: "Thailand", placeholder: "Travel photo placeholder" },
-  { location: "Kuala Lumpur", country: "Malaysia", placeholder: "Travel photo placeholder" },
-  { location: "Singapore", country: "Singapore", placeholder: "Travel photo placeholder" },
-  { location: "Bali", country: "Indonesia", placeholder: "Travel photo placeholder" },
-  { location: "Chennai & Bangalore", country: "India", placeholder: "Travel photo placeholder" },
-  { location: "New York", country: "USA", placeholder: "Travel photo placeholder" },
-  { location: "Chicago", country: "USA", placeholder: "Travel photo placeholder" },
-  { location: "San Francisco", country: "USA", placeholder: "Travel photo placeholder" },
-  { location: "Seattle", country: "USA", placeholder: "Travel photo placeholder" },
-  { location: "Manuel Antonio", country: "Costa Rica", placeholder: "Travel photo placeholder" },
-  { location: "Hawaii", country: "USA", placeholder: "Travel photo placeholder" },
+  { location: "Tokyo, Kyoto & Osaka", country: "Japan", photos: [] },
+  { location: "Phuket", country: "Thailand", photos: [] },
+  { location: "Kuala Lumpur", country: "Malaysia", photos: [] },
+  { location: "Singapore", country: "Singapore", photos: [] },
+  { location: "Bali", country: "Indonesia", photos: [] },
+  { location: "Chennai & Bangalore", country: "India", photos: [] },
+  { location: "New York", country: "USA", photos: [] },
+  { location: "Chicago", country: "USA", photos: [] },
+  { location: "San Francisco", country: "USA", photos: [] },
+  { location: "Seattle", country: "USA", photos: [] },
+  { location: "Manuel Antonio", country: "Costa Rica", photos: [] },
+  { location: "Hawaii", country: "USA", photos: [] },
 ];

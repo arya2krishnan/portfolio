@@ -2,42 +2,23 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { LuMusic, LuExternalLink, LuTrendingUp, LuCrown } from "react-icons/lu";
+import { LuMusic, LuExternalLink } from "react-icons/lu";
 
-interface NowPlayingData {
-  isPlaying: boolean;
-  track?: string;
-  artist?: string;
-  album?: string;
-  albumArt?: string;
-  url?: string;
-}
-
-interface TopArtist {
+interface TrackInfo {
   name: string;
-  playcount: string;
-  url: string;
-  image: string | null;
+  artistName: string;
+  albumName: string;
+  artworkUrl: string | null;
+  url: string | null;
 }
 
-interface TopArtistsData {
-  monthly: TopArtist[];
-  yearly: TopArtist[];
-}
-
-function SoundBars({ playing }: { playing: boolean }) {
+function SoundBars() {
   return (
     <div className="flex items-end gap-0.5 h-4">
       {[0, 1, 2, 3].map((i) => (
         <motion.div
           key={i}
-          animate={
-            playing
-              ? {
-                  height: ["4px", "16px", "8px", "14px", "4px"],
-                }
-              : { height: "4px" }
-          }
+          animate={{ height: ["4px", "16px", "8px", "14px", "4px"] }}
           transition={{
             duration: 1.2,
             repeat: Infinity,
@@ -52,137 +33,96 @@ function SoundBars({ playing }: { playing: boolean }) {
 }
 
 export default function NowPlaying() {
-  const [data, setData] = useState<NowPlayingData | null>(null);
-  const [topArtists, setTopArtists] = useState<TopArtistsData | null>(null);
+  const [tracks, setTracks] = useState<TrackInfo[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchNowPlaying = async () => {
+    const fetchData = async () => {
       try {
-        const res = await fetch("/api/now-playing");
-        const json = await res.json();
-        setData(json);
+        const res = await fetch("/api/apple-music/now-playing");
+        if (res.ok) {
+          const json = await res.json();
+          setTracks(json.recentTracks || []);
+        }
       } catch {
         // silently fail
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    const fetchTopArtists = async () => {
-      try {
-        const res = await fetch("/api/top-artists");
-        const json = await res.json();
-        setTopArtists(json);
-      } catch {
-        // silently fail
-      }
-    };
-
-    fetchNowPlaying();
-    fetchTopArtists();
-    const npInterval = setInterval(fetchNowPlaying, 30000);
-    return () => clearInterval(npInterval);
+    fetchData();
+    const interval = setInterval(fetchData, 60000);
+    return () => clearInterval(interval);
   }, []);
 
-  if (!data) return null;
+  if (isLoading) {
+    return (
+      <div className="max-w-lg">
+        <div className="glow-border bg-[#111] rounded-lg p-3 flex items-center gap-3 animate-pulse">
+          <div className="w-10 h-10 rounded bg-[#1a1a1a]" />
+          <div className="flex-1 space-y-2">
+            <div className="h-2 bg-[#1a1a1a] rounded w-24" />
+            <div className="h-2 bg-[#1a1a1a] rounded w-32" />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-  const hasTopArtists = topArtists && (topArtists.monthly.length > 0 || topArtists.yearly.length > 0);
+  if (tracks.length === 0) return null;
 
   return (
-    <div className="space-y-3 max-w-lg">
-      {/* Last played / Now playing */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="glow-border bg-[#111] rounded-lg p-3 flex items-center gap-3"
-      >
-        <div className="w-10 h-10 rounded bg-[#1a1a1a] border border-[#222] flex items-center justify-center shrink-0 overflow-hidden">
-          {data.albumArt ? (
-            <img src={data.albumArt} alt={data.album} className="w-full h-full object-cover" />
-          ) : (
-            <LuMusic className="text-cyan-400/40" size={16} />
-          )}
-        </div>
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="max-w-lg glow-border bg-[#111] rounded-lg p-3 space-y-2"
+    >
+      <div className="flex items-center gap-2 mb-1">
+        <SoundBars />
+        <span className="text-[10px] font-mono text-slate-500">
+          Recently played
+        </span>
+      </div>
 
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <SoundBars playing={data.isPlaying} />
-            <span className="text-[10px] font-mono text-slate-500">
-              {data.isPlaying ? "Now playing" : "Last played"}
-            </span>
-          </div>
-          <p className="text-white text-xs truncate mt-0.5">{data.track}</p>
-          <p className="text-slate-400 text-[10px] truncate">{data.artist}</p>
-        </div>
-
-        {data.url && (
-          <a
-            href={data.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-slate-500 hover:text-cyan-400 transition-colors shrink-0"
-          >
-            <LuExternalLink size={12} />
-          </a>
-        )}
-      </motion.div>
-
-      {/* Top artists row */}
-      {hasTopArtists && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="flex gap-3"
+      {tracks.map((track, i) => (
+        <div
+          key={`${track.name}-${i}`}
+          className={`flex items-center gap-3 ${
+            i === 0 ? "" : "opacity-60"
+          }`}
         >
-          {/* Top 5 this month */}
-          {topArtists.monthly.length > 0 && (
-            <div className="flex-1 glow-border bg-[#111] rounded-lg p-3">
-              <div className="flex items-center gap-1.5 mb-2">
-                <LuTrendingUp className="text-cyan-400/60" size={12} />
-                <span className="text-[10px] font-mono text-slate-500">Top artists this month</span>
-              </div>
-              <ol className="space-y-1">
-                {topArtists.monthly.map((artist, i) => (
-                  <li key={artist.name} className="flex items-center gap-2">
-                    <span className="text-[10px] font-mono text-cyan-400/40 w-3">{i + 1}</span>
-                    <a
-                      href={artist.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs text-slate-300 hover:text-cyan-400 transition-colors truncate"
-                    >
-                      {artist.name}
-                    </a>
-                    <span className="text-[10px] text-slate-600 font-mono ml-auto shrink-0">
-                      {artist.playcount} plays
-                    </span>
-                  </li>
-                ))}
-              </ol>
-            </div>
-          )}
+          <div className="w-8 h-8 rounded bg-[#1a1a1a] border border-[#222] flex items-center justify-center shrink-0 overflow-hidden">
+            {track.artworkUrl ? (
+              <img
+                src={track.artworkUrl}
+                alt={track.albumName}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <LuMusic className="text-cyan-400/40" size={12} />
+            )}
+          </div>
 
-          {/* Top artist YTD */}
-          {topArtists.yearly.length > 0 && (
-            <div className="glow-border bg-[#111] rounded-lg p-3 flex flex-col items-center justify-center min-w-[120px]">
-              <div className="flex items-center gap-1.5 mb-2">
-                <LuCrown className="text-cyan-400/60" size={12} />
-                <span className="text-[10px] font-mono text-slate-500">Artist of the year</span>
-              </div>
-              <a
-                href={topArtists.yearly[0].url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-white hover:text-cyan-400 transition-colors font-semibold text-center"
-              >
-                {topArtists.yearly[0].name}
-              </a>
-              <span className="text-[10px] text-slate-600 font-mono mt-0.5">
-                {topArtists.yearly[0].playcount} plays
-              </span>
-            </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-white text-xs truncate">{track.name}</p>
+            <p className="text-slate-400 text-[10px] truncate">
+              {track.artistName}
+            </p>
+          </div>
+
+          {track.url && (
+            <a
+              href={track.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-slate-500 hover:text-cyan-400 transition-colors shrink-0"
+            >
+              <LuExternalLink size={10} />
+            </a>
           )}
-        </motion.div>
-      )}
-    </div>
+        </div>
+      ))}
+    </motion.div>
   );
 }

@@ -3,34 +3,17 @@
 import { useState, useCallback } from "react";
 import {
   LuMusic,
-  LuMountain,
-  LuWaves,
-  LuCoffee,
   LuDisc3,
-  LuGuitar,
-  LuCookingPot,
-  LuMapPin,
   LuPlay,
   LuPause,
   LuPlane,
 } from "react-icons/lu";
-import { GiBasketballBall } from "react-icons/gi";
 import { motion } from "framer-motion";
 import { hobbies, travels } from "@/data/resume";
 import SectionHeader from "@/components/ui/SectionHeader";
 import FadeInView from "@/components/ui/FadeInView";
-import ImagePlaceholder from "@/components/ui/ImagePlaceholder";
-
-const hobbyIconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
-  music: LuMusic,
-  disc: LuDisc3,
-  guitar: LuGuitar,
-  mountain: LuMountain,
-  basketball: GiBasketballBall,
-  waves: LuWaves,
-  coffee: LuCoffee,
-  cooking: LuCookingPot,
-};
+import HobbyCard from "@/components/hobbies/HobbyCard";
+import TravelDestinationCard from "@/components/hobbies/TravelDestinationCard";
 
 function VinylPlayer() {
   const [spinning, setSpinning] = useState(false);
@@ -100,21 +83,11 @@ function VinylPlayer() {
 function HobbyGrid() {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
-      {hobbies.map((hobby, i) => {
-        const Icon = hobbyIconMap[hobby.icon] || LuMusic;
-        return (
-          <FadeInView key={hobby.name} delay={i * 0.05}>
-            <motion.div
-              whileHover={{ y: -4, scale: 1.02 }}
-              className="glow-border bg-[#111] rounded-xl flex flex-col items-center gap-4 md:gap-5 cursor-default"
-              style={{ padding: "clamp(0.75rem, 1.5vw, 1.25rem)" }}
-            >
-              <Icon size={28} className="text-cyan-400/80" />
-              <span className="text-slate-300 text-sm text-center">{hobby.name}</span>
-            </motion.div>
-          </FadeInView>
-        );
-      })}
+      {hobbies.map((hobby, i) => (
+        <FadeInView key={hobby.name} delay={i * 0.05}>
+          <HobbyCard hobby={hobby} />
+        </FadeInView>
+      ))}
     </div>
   );
 }
@@ -129,17 +102,7 @@ function TravelGallery() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
         {travels.map((dest, i) => (
           <FadeInView key={dest.location} delay={i * 0.1}>
-            <motion.div
-              whileHover={{ y: -4 }}
-              className="glow-border bg-[#111] rounded-lg overflow-hidden group cursor-default"
-            >
-              <ImagePlaceholder label={`${dest.location} photo`} />
-              <div className="p-6 sm:p-8 md:p-10 flex items-center gap-3">
-                <LuMapPin size={14} className="text-cyan-400/60" />
-                <span className="text-white text-sm">{dest.location}</span>
-                <span className="text-slate-500 text-xs">{dest.country}</span>
-              </div>
-            </motion.div>
+            <TravelDestinationCard dest={dest} />
           </FadeInView>
         ))}
       </div>
