@@ -159,7 +159,7 @@ export default function Hero() {
 
           <p className="text-slate-400 text-sm sm:text-base max-w-xl mb-6 leading-relaxed">
             Building products at Atlassian. UC Berkeley CS & Econ grad. Passionate about
-            shipping at scale, AI-augmented development, and making great coffee.
+            shipping at scale, AI-augmented development, finding new jams, and making great coffee.
           </p>
 
           {/* Social links */}

@@ -7,6 +7,8 @@ import {
   LuPlay,
   LuPause,
   LuPlane,
+  LuLightbulb,
+  LuKeyRound,
 } from "react-icons/lu";
 import { motion } from "framer-motion";
 import { hobbies, travels } from "@/data/resume";
@@ -15,6 +17,7 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import FadeInView from "@/components/ui/FadeInView";
 import HobbyCard from "@/components/hobbies/HobbyCard";
 import TravelDestinationCard from "@/components/hobbies/TravelDestinationCard";
+import SongRecForm from "@/components/SongRecForm";
 
 function VinylPlayer() {
   const [spinning, setSpinning] = useState(false);
@@ -97,12 +100,18 @@ function VinylPlayer() {
 
 function HobbyGrid() {
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+    <div>
+      <div className="flex items-center gap-3 mb-10 md:mb-12">
+        <LuLightbulb className="text-emerald-400" size={24} />
+        <h3 className="text-lg md:text-xl font-semibold text-white">Interests</h3>
+      </div>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
       {hobbies.map((hobby, i) => (
         <FadeInView key={hobby.name} delay={i * 0.05}>
           <HobbyCard hobby={hobby} />
         </FadeInView>
       ))}
+      </div>
     </div>
   );
 }
@@ -159,8 +168,9 @@ export default function Hobbies() {
   return (
     <section id="hobbies" className="py-8 sm:py-10 md:py-12 relative">
       <div className="section-container">
-        <SectionHeader icon={LuMusic} title="Beyond the Code" />
+        <SectionHeader icon={LuKeyRound} title="Decoded" />
         <DJVideoSection />
+        <SongRecForm />
         <HobbyGrid />
         <TravelGallery />
       </div>

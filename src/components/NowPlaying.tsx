@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { LuMusic } from "react-icons/lu";
+import { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { LuMusic, LuChevronDown, LuChevronUp } from "react-icons/lu";
 
 interface TrackInfo {
   name: string;
@@ -53,65 +53,30 @@ function buildSpotifySearchUrl(track: TrackInfo): string {
   return `https://open.spotify.com/search/${query}`;
 }
 
-export default function NowPlaying() {
-  const [tracks, setTracks] = useState<TrackInfo[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+/* ---------- Flip card for a single track slot ---------- */
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetch("/api/apple-music/now-playing");
-        if (res.ok) {
-          const json = await res.json();
-          setTracks(json.recentTracks || []);
-        }
-      } catch {
-        // silently fail
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-    const interval = setInterval(fetchData, 60000);
-    return () => clearInterval(interval);
-  }, []);
-
-  if (isLoading) {
-    return (
-      <div className="max-w-lg">
-        <div className="glow-border bg-[#111] rounded-lg p-3 flex items-center gap-3 animate-pulse">
-          <div className="w-10 h-10 rounded bg-[#1a1a1a]" />
-          <div className="flex-1 space-y-2">
-            <div className="h-2 bg-[#1a1a1a] rounded w-24" />
-            <div className="h-2 bg-[#1a1a1a] rounded w-32" />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (tracks.length === 0) return null;
+function FlipTrackCard({
+  front,
+  back,
+  flipped,
+}: {
+  front: TrackInfo;
+  back: TrackInfo | null;
+  flipped: boolean;
+}) {
+  const track = flipped && back ? back : front;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="max-w-lg glow-border bg-[#111] rounded-lg p-3 space-y-2"
-    >
-      <div className="flex items-center gap-2 mb-1">
-        <SoundBars />
-        <span className="text-[10px] font-mono text-slate-500">
-          Recently played
-        </span>
-      </div>
-
-      {tracks.map((track, i) => (
-        <div
-          key={`${track.name}-${i}`}
-          className={`flex items-center gap-3 ${
-            i === 0 ? "" : "opacity-60"
-          }`}
+    <div className="relative h-10" style={{ perspective: "600px" }}>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={`${track.name}-${track.artistName}`}
+          initial={{ rotateX: flipped ? -90 : 90, opacity: 0 }}
+          animate={{ rotateX: 0, opacity: 1 }}
+          exit={{ rotateX: flipped ? 90 : -90, opacity: 0 }}
+          transition={{ duration: 0.4, ease: "easeInOut" }}
+          className="flex items-center gap-3 w-full"
+          style={{ transformOrigin: "center center" }}
         >
           <div className="w-8 h-8 rounded bg-[#1a1a1a] border border-[#222] flex items-center justify-center shrink-0 overflow-hidden">
             {track.artworkUrl ? (
@@ -154,8 +119,99 @@ export default function NowPlaying() {
               <SpotifyIcon />
             </a>
           </div>
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+}
+
+/* ---------- Main component ---------- */
+
+export default function NowPlaying() {
+  const [tracks, setTracks] = useState<TrackInfo[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showingSecondPage, setShowingSecondPage] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch("/api/apple-music/now-playing");
+        if (res.ok) {
+          const json = await res.json();
+          setTracks(json.recentTracks || []);
+        }
+      } catch {
+        // silently fail
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+    const interval = setInterval(fetchData, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const firstPage = tracks.slice(0, 5);
+  const secondPage = tracks.slice(5, 10);
+  const hasSecondPage = secondPage.length > 0;
+
+  const togglePage = useCallback(() => {
+    if (hasSecondPage) setShowingSecondPage((v) => !v);
+  }, [hasSecondPage]);
+
+  if (isLoading) {
+    return (
+      <div className="max-w-lg">
+        <div className="glow-border bg-[#111] rounded-lg p-3 flex items-center gap-3 animate-pulse">
+          <div className="w-10 h-10 rounded bg-[#1a1a1a]" />
+          <div className="flex-1 space-y-2">
+            <div className="h-2 bg-[#1a1a1a] rounded w-24" />
+            <div className="h-2 bg-[#1a1a1a] rounded w-32" />
+          </div>
         </div>
-      ))}
+      </div>
+    );
+  }
+
+  if (tracks.length === 0) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="max-w-lg glow-border bg-[#111] rounded-lg p-3"
+    >
+      <div className="flex items-center gap-2 mb-2">
+        <SoundBars />
+        <span className="text-[10px] font-mono text-slate-500">
+          Recently played
+        </span>
+        {hasSecondPage && (
+          <button
+            onClick={togglePage}
+            className="ml-auto text-slate-500 hover:text-emerald-400 transition-colors p-0.5 rounded"
+            title={showingSecondPage ? "Show 1-5" : "Show 6-10"}
+          >
+            {showingSecondPage ? (
+              <LuChevronUp size={14} />
+            ) : (
+              <LuChevronDown size={14} />
+            )}
+          </button>
+        )}
+      </div>
+
+      <div className="space-y-2">
+        {firstPage.map((track, i) => (
+          <FlipTrackCard
+            key={i}
+            front={track}
+            back={secondPage[i] || null}
+            flipped={showingSecondPage}
+          />
+        ))}
+      </div>
     </motion.div>
   );
 }

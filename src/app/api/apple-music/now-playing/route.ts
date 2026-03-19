@@ -19,7 +19,7 @@ export async function GET() {
   try {
     const result = (await fetchAppleMusicAPI(
       "/v1/me/recent/played/tracks",
-      { limit: "5" }
+      { limit: "10" }
     )) as { data: AppleMusicTrack[] } | null;
 
     if (!result?.data?.length) {
