@@ -40,7 +40,7 @@ function Wave({
         <path
           d="M0,40 C100,10 200,70 400,40 C600,10 700,70 900,40 C1000,20 1100,60 1200,40 L1200,120 L0,120 Z"
           fill="currentColor"
-          className="text-cyan-400"
+          className="text-emerald-400"
         />
       </svg>
     </motion.div>
@@ -67,7 +67,7 @@ export default function SwimmingCard() {
       className="glow-border bg-[#111] rounded-xl flex flex-col items-center gap-4 md:gap-5 cursor-pointer relative overflow-hidden"
       style={{ padding: "clamp(0.75rem, 1.5vw, 1.25rem)" }}
     >
-      <LuWaves size={28} className="text-cyan-400/80 relative z-10" />
+      <LuWaves size={28} className="text-emerald-400/80 relative z-10" />
       <span className="text-slate-300 text-sm text-center relative z-10">Swimming</span>
 
       <AnimatePresence>

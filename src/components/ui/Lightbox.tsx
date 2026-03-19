@@ -6,8 +6,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { LuX, LuChevronLeft, LuChevronRight } from "react-icons/lu";
 import Image from "next/image";
 
+interface LightboxItem {
+  src: string;
+  alt: string;
+  type?: "image" | "video";
+}
+
 interface LightboxProps {
-  images: { src: string; alt: string }[];
+  images: LightboxItem[];
   startIndex?: number;
   isOpen: boolean;
   onClose: () => void;
@@ -49,6 +55,10 @@ export default function Lightbox({
   }, [isOpen, handleKeyDown]);
 
   if (typeof window === "undefined" || !isOpen) return null;
+
+  const current = images[index];
+  const isVideo = current?.type === "video" ||
+    current?.src?.match(/\.(mp4|mov|webm)$/i);
 
   return createPortal(
     <AnimatePresence>
@@ -94,7 +104,7 @@ export default function Lightbox({
           </>
         )}
 
-        {/* Image */}
+        {/* Content */}
         <motion.div
           key={index}
           initial={{ opacity: 0, scale: 0.95 }}
@@ -105,19 +115,31 @@ export default function Lightbox({
           transition={{ duration: 0.2 }}
           onClick={(e) => {
             e.stopPropagation();
-            setZoomed(!zoomed);
+            if (!isVideo) setZoomed(!zoomed);
           }}
-          className="relative max-w-[90vw] max-h-[85vh] cursor-zoom-in"
-          style={{ cursor: zoomed ? "zoom-out" : "zoom-in" }}
+          className="relative max-w-[90vw] max-h-[85vh]"
+          style={{ cursor: isVideo ? "default" : zoomed ? "zoom-out" : "zoom-in" }}
         >
-          <Image
-            src={images[index].src}
-            alt={images[index].alt}
-            width={1200}
-            height={800}
-            className="object-contain max-h-[85vh] w-auto"
-            priority
-          />
+          {isVideo ? (
+            <video
+              key={current.src}
+              src={current.src}
+              controls
+              autoPlay
+              playsInline
+              className="max-h-[85vh] max-w-[90vw] rounded-lg"
+              onClick={(e) => e.stopPropagation()}
+            />
+          ) : (
+            <Image
+              src={current.src}
+              alt={current.alt}
+              width={1200}
+              height={800}
+              className="object-contain max-h-[85vh] w-auto"
+              priority
+            />
+          )}
         </motion.div>
 
         {/* Counter */}

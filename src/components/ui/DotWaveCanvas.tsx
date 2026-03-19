@@ -84,7 +84,7 @@ export default function DotWaveCanvas({ className = "" }: DotWaveCanvasProps) {
 
           ctx!.beginPath();
           ctx!.arc(x, y, DOT_RADIUS, 0, Math.PI * 2);
-          ctx!.fillStyle = `rgba(34, 211, 238, ${opacity})`;
+          ctx!.fillStyle = `rgba(52, 211, 153, ${opacity})`;
           ctx!.fill();
         }
       }

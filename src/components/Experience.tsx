@@ -22,7 +22,7 @@ function ExperienceCard({ exp, index }: { exp: ExperienceType; index: number }) 
       <div className="absolute left-0 top-0 bottom-0 w-px bg-[#222]" />
       <div
         className={`absolute left-0 top-1 w-2 h-2 rounded-full -translate-x-[3.5px] ${
-          index === 0 ? "bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.5)]" : "bg-slate-600"
+          index === 0 ? "bg-emerald-400 shadow-[0_0_8px_rgba(34,211,238,0.5)]" : "bg-slate-600"
         }`}
       />
 
@@ -33,10 +33,10 @@ function ExperienceCard({ exp, index }: { exp: ExperienceType; index: number }) 
       >
         <div className="flex items-start justify-between">
           <div>
-            <h3 className="text-white font-semibold text-lg group-hover:text-cyan-400 transition-colors mb-1">
+            <h3 className="text-white font-semibold text-lg group-hover:text-emerald-400 transition-colors mb-1">
               {exp.company}
             </h3>
-            <p className="text-cyan-400/80 font-mono text-sm mb-1">{exp.role}</p>
+            <p className="text-emerald-400/80 font-mono text-sm mb-1">{exp.role}</p>
             <p className="text-slate-500 text-sm mt-2">
               {exp.location} &middot; {exp.period}
             </p>
@@ -62,7 +62,7 @@ function ExperienceCard({ exp, index }: { exp: ExperienceType; index: number }) 
           <ul className="mt-4 space-y-1.5 md:space-y-2">
             {exp.bullets.map((bullet, i) => (
               <li key={i} className="text-slate-400 text-xs md:text-sm flex items-start gap-2">
-                <span className="text-cyan-400/60 mt-1.5 shrink-0">&#9656;</span>
+                <span className="text-emerald-400/60 mt-1.5 shrink-0">&#9656;</span>
                 {bullet}
               </li>
             ))}

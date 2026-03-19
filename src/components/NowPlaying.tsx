@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { LuMusic, LuExternalLink } from "react-icons/lu";
+import { LuMusic } from "react-icons/lu";
 
 interface TrackInfo {
   name: string;
@@ -25,11 +25,32 @@ function SoundBars() {
             delay: i * 0.15,
             ease: "easeInOut",
           }}
-          className="w-0.5 bg-cyan-400 rounded-full"
+          className="w-0.5 bg-emerald-400 rounded-full"
         />
       ))}
     </div>
   );
+}
+
+function AppleMusicIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} width="13" height="13">
+      <path d="M20.44 1.642a.8.8 0 0 0-.464-.078l-11.2 3.2a.7.7 0 0 0-.476.636v10.933a3.6 3.6 0 0 0-1.5-.333C5.026 16 3.6 17.12 3.6 18.5S5.026 21 6.8 21s3.2-1.12 3.2-2.5V9.16l9.6-2.743v7.916a3.6 3.6 0 0 0-1.5-.333c-1.774 0-3.2 1.12-3.2 2.5s1.426 2.5 3.2 2.5 3.2-1.12 3.2-2.5V2.4a.8.8 0 0 0-.44-.712z" />
+    </svg>
+  );
+}
+
+function SpotifyIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} width="12" height="12">
+      <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" />
+    </svg>
+  );
+}
+
+function buildSpotifySearchUrl(track: TrackInfo): string {
+  const query = encodeURIComponent(`${track.name} ${track.artistName}`);
+  return `https://open.spotify.com/search/${query}`;
 }
 
 export default function NowPlaying() {
@@ -100,7 +121,7 @@ export default function NowPlaying() {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <LuMusic className="text-cyan-400/40" size={12} />
+              <LuMusic className="text-emerald-400/40" size={12} />
             )}
           </div>
 
@@ -111,16 +132,28 @@ export default function NowPlaying() {
             </p>
           </div>
 
-          {track.url && (
+          <div className="flex items-center gap-1.5 shrink-0">
+            {track.url && (
+              <a
+                href={track.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Listen on Apple Music"
+                className="text-slate-500 hover:text-[#fc3c44] transition-colors p-1 rounded hover:bg-white/5"
+              >
+                <AppleMusicIcon />
+              </a>
+            )}
             <a
-              href={track.url}
+              href={buildSpotifySearchUrl(track)}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-slate-500 hover:text-cyan-400 transition-colors shrink-0"
+              title="Find on Spotify"
+              className="text-slate-500 hover:text-[#1DB954] transition-colors p-1 rounded hover:bg-white/5"
             >
-              <LuExternalLink size={10} />
+              <SpotifyIcon />
             </a>
-          )}
+          </div>
         </div>
       ))}
     </motion.div>

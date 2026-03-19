@@ -20,7 +20,7 @@ export default function MusicProductionCard() {
         className={`glow-border bg-[#111] rounded-xl flex flex-col items-center gap-4 md:gap-5 ${hasTracks ? "cursor-pointer" : "cursor-default"}`}
         style={{ padding: "clamp(0.75rem, 1.5vw, 1.25rem)" }}
       >
-        <LuMusic size={28} className="text-cyan-400/80" />
+        <LuMusic size={28} className="text-emerald-400/80" />
         <span className="text-slate-300 text-sm text-center">Music Production</span>
       </motion.div>
 

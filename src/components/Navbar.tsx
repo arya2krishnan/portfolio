@@ -64,7 +64,7 @@ export default function Navbar() {
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-8 lg:px-10 h-14 sm:h-16 flex items-center justify-between">
           <a
             href="#"
-            className="flex items-center gap-2 text-cyan-400 font-mono text-sm font-semibold hover:text-cyan-300 transition-colors"
+            className="flex items-center gap-2 text-emerald-400 font-mono text-sm font-semibold hover:text-emerald-300 transition-colors"
           >
             <LuTerminal size={18} />
             <span>aryakrishnan.dev</span>
@@ -78,7 +78,7 @@ export default function Navbar() {
                 href={link.href}
                 className={`font-mono text-xs uppercase tracking-wider transition-colors ${
                   activeSection === link.href.slice(1)
-                    ? "text-cyan-400"
+                    ? "text-emerald-400"
                     : "text-slate-400 hover:text-slate-200"
                 }`}
               >
@@ -90,7 +90,7 @@ export default function Navbar() {
           {/* Mobile hamburger */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden text-slate-400 hover:text-cyan-400 transition-colors p-1"
+            className="md:hidden text-slate-400 hover:text-emerald-400 transition-colors p-1"
             aria-label="Toggle menu"
           >
             {mobileOpen ? <LuX size={22} /> : <LuMenu size={22} />}
@@ -119,8 +119,8 @@ export default function Navbar() {
                   transition={{ delay: i * 0.05 }}
                   className={`font-mono text-lg uppercase tracking-wider transition-colors ${
                     activeSection === link.href.slice(1)
-                      ? "text-cyan-400"
-                      : "text-slate-300 hover:text-cyan-400"
+                      ? "text-emerald-400"
+                      : "text-slate-300 hover:text-emerald-400"
                   }`}
                 >
                   {link.label}

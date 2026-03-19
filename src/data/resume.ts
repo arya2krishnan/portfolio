@@ -231,6 +231,7 @@ export const hobbies: Hobby[] = [
 export interface TravelPhoto {
   src: string;
   alt: string;
+  type: "image" | "video";
 }
 
 export interface TravelDestination {
@@ -239,17 +240,112 @@ export interface TravelDestination {
   photos: TravelPhoto[];
 }
 
+const BLOB = "https://x2gu29gptmtx0gyc.public.blob.vercel-storage.com";
+
 export const travels: TravelDestination[] = [
-  { location: "Tokyo, Kyoto & Osaka", country: "Japan", photos: [] },
-  { location: "Phuket", country: "Thailand", photos: [] },
-  { location: "Kuala Lumpur", country: "Malaysia", photos: [] },
-  { location: "Singapore", country: "Singapore", photos: [] },
-  { location: "Bali", country: "Indonesia", photos: [] },
-  { location: "Chennai & Bangalore", country: "India", photos: [] },
-  { location: "New York", country: "USA", photos: [] },
-  { location: "Chicago", country: "USA", photos: [] },
-  { location: "San Francisco", country: "USA", photos: [] },
-  { location: "Seattle", country: "USA", photos: [] },
-  { location: "Manuel Antonio", country: "Costa Rica", photos: [] },
-  { location: "Hawaii", country: "USA", photos: [] },
+  {
+    location: "Tokyo, Kyoto & Osaka", country: "Japan", photos: [
+      { src: `${BLOB}/travel/tokyo_kyoto_osaka/1.jpg`, alt: "Japan 1", type: "image" },
+      { src: `${BLOB}/travel/tokyo_kyoto_osaka/2.jpg`, alt: "Japan 2", type: "image" },
+      { src: `${BLOB}/travel/tokyo_kyoto_osaka/3.jpg`, alt: "Japan 3", type: "image" },
+      { src: `${BLOB}/travel/tokyo_kyoto_osaka/4.jpg`, alt: "Japan 4", type: "image" },
+      { src: `${BLOB}/travel/tokyo_kyoto_osaka/5.jpg`, alt: "Japan 5", type: "image" },
+      { src: `${BLOB}/travel/tokyo_kyoto_osaka/6.jpg`, alt: "Japan 6", type: "image" },
+      { src: `${BLOB}/travel/tokyo_kyoto_osaka/7.jpg`, alt: "Japan 7", type: "image" },
+      { src: `${BLOB}/travel/tokyo_kyoto_osaka/8.jpg`, alt: "Japan 8", type: "image" },
+      { src: `${BLOB}/travel/tokyo_kyoto_osaka/9.MP4.mp4`, alt: "Japan video 1", type: "video" },
+      { src: `${BLOB}/travel/tokyo_kyoto_osaka/10.MP4.mp4`, alt: "Japan video 2", type: "video" },
+    ],
+  },
+  {
+    location: "Phuket", country: "Thailand", photos: [
+      { src: `${BLOB}/travel/phuket/1.jpg`, alt: "Phuket 1", type: "image" },
+      { src: `${BLOB}/travel/phuket/2.jpg`, alt: "Phuket 2", type: "image" },
+      { src: `${BLOB}/travel/phuket/3.jpg`, alt: "Phuket 3", type: "image" },
+      { src: `${BLOB}/travel/phuket/4.jpg`, alt: "Phuket 4", type: "image" },
+      { src: `${BLOB}/travel/phuket/5.jpg`, alt: "Phuket 5", type: "image" },
+    ],
+  },
+  {
+    location: "Kuala Lumpur", country: "Malaysia", photos: [
+      { src: `${BLOB}/travel/kuala_lampur/1.jpg`, alt: "KL 1", type: "image" },
+      { src: `${BLOB}/travel/kuala_lampur/2.jpg`, alt: "KL 2", type: "image" },
+      { src: `${BLOB}/travel/kuala_lampur/3.jpg`, alt: "KL 3", type: "image" },
+      { src: `${BLOB}/travel/kuala_lampur/4.jpg`, alt: "KL 4", type: "image" },
+    ],
+  },
+  {
+    location: "Singapore", country: "Singapore", photos: [
+      { src: `${BLOB}/travel/singapore/1.jpg`, alt: "Singapore 1", type: "image" },
+      { src: `${BLOB}/travel/singapore/2.jpg`, alt: "Singapore 2", type: "image" },
+      { src: `${BLOB}/travel/singapore/3.jpg`, alt: "Singapore 3", type: "image" },
+      { src: `${BLOB}/travel/singapore/3.mp4`, alt: "Singapore video", type: "video" },
+      { src: `${BLOB}/travel/singapore/4.jpg`, alt: "Singapore 4", type: "image" },
+    ],
+  },
+  {
+    location: "Bali", country: "Indonesia", photos: [
+      { src: `${BLOB}/travel/bali/1.jpg`, alt: "Bali 1", type: "image" },
+      { src: `${BLOB}/travel/bali/2.jpg`, alt: "Bali 2", type: "image" },
+      { src: `${BLOB}/travel/bali/3.MP4.mp4`, alt: "Bali video 1", type: "video" },
+      { src: `${BLOB}/travel/bali/4.png`, alt: "Bali 4", type: "image" },
+      { src: `${BLOB}/travel/bali/5.jpg`, alt: "Bali 5", type: "image" },
+      { src: `${BLOB}/travel/bali/6.jpg`, alt: "Bali 6", type: "image" },
+      { src: `${BLOB}/travel/bali/7.jpg`, alt: "Bali 7", type: "image" },
+      { src: `${BLOB}/travel/bali/8.jpg`, alt: "Bali 8", type: "image" },
+      { src: `${BLOB}/travel/bali/9.MP4.mp4`, alt: "Bali video 2", type: "video" },
+    ],
+  },
+  {
+    location: "Chennai & Bangalore", country: "India", photos: [
+      { src: `${BLOB}/travel/chennai_bangalore/1.jpg`, alt: "India 1", type: "image" },
+      { src: `${BLOB}/travel/chennai_bangalore/2.jpg`, alt: "India 2", type: "image" },
+    ],
+  },
+  {
+    location: "New York", country: "USA", photos: [
+      { src: `${BLOB}/travel/new_york/1.jpg`, alt: "NYC 1", type: "image" },
+      { src: `${BLOB}/travel/new_york/2.jpg`, alt: "NYC 2", type: "image" },
+      { src: `${BLOB}/travel/new_york/3.jpg`, alt: "NYC 3", type: "image" },
+    ],
+  },
+  {
+    location: "Chicago", country: "USA", photos: [
+      { src: `${BLOB}/travel/chicago/1.jpg`, alt: "Chicago 1", type: "image" },
+      { src: `${BLOB}/travel/chicago/2.MP4.mp4`, alt: "Chicago video", type: "video" },
+      { src: `${BLOB}/travel/chicago/3.jpg`, alt: "Chicago 3", type: "image" },
+      { src: `${BLOB}/travel/chicago/4.jpg`, alt: "Chicago 4", type: "image" },
+      { src: `${BLOB}/travel/chicago/5.jpg`, alt: "Chicago 5", type: "image" },
+    ],
+  },
+  {
+    location: "San Francisco", country: "USA", photos: [
+      { src: `${BLOB}/travel/san_francisco/1.jpg`, alt: "SF 1", type: "image" },
+      { src: `${BLOB}/travel/san_francisco/2.jpg`, alt: "SF 2", type: "image" },
+      { src: `${BLOB}/travel/san_francisco/3.jpg`, alt: "SF 3", type: "image" },
+    ],
+  },
+  {
+    location: "Seattle", country: "USA", photos: [
+      { src: `${BLOB}/travel/seattle/1.jpg`, alt: "Seattle 1", type: "image" },
+      { src: `${BLOB}/travel/seattle/2.jpg`, alt: "Seattle 2", type: "image" },
+      { src: `${BLOB}/travel/seattle/3.jpg`, alt: "Seattle 3", type: "image" },
+    ],
+  },
+  {
+    location: "Manuel Antonio", country: "Costa Rica", photos: [
+      { src: `${BLOB}/travel/manuel_antonio/1.jpg`, alt: "Costa Rica 1", type: "image" },
+      { src: `${BLOB}/travel/manuel_antonio/2.jpg`, alt: "Costa Rica 2", type: "image" },
+      { src: `${BLOB}/travel/manuel_antonio/3.MOV.mp4`, alt: "Costa Rica video 1", type: "video" },
+      { src: `${BLOB}/travel/manuel_antonio/4.MOV.mp4`, alt: "Costa Rica video 2", type: "video" },
+      { src: `${BLOB}/travel/manuel_antonio/5.MOV.mp4`, alt: "Costa Rica video 3", type: "video" },
+    ],
+  },
+  {
+    location: "Hawaii", country: "USA", photos: [
+      { src: `${BLOB}/travel/hawaii/1.jpg`, alt: "Hawaii 1", type: "image" },
+      { src: `${BLOB}/travel/hawaii/2.jpg`, alt: "Hawaii 2", type: "image" },
+      { src: `${BLOB}/travel/hawaii/3.jpg`, alt: "Hawaii 3", type: "image" },
+    ],
+  },
 ];

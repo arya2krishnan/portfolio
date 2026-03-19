@@ -45,9 +45,9 @@ export default function DrumsGuitarCard() {
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
         >
           {isGuitar ? (
-            <LuGuitar size={28} className="text-cyan-400/80" />
+            <LuGuitar size={28} className="text-emerald-400/80" />
           ) : (
-            <GiDrumKit size={28} className="text-cyan-400/80" />
+            <GiDrumKit size={28} className="text-emerald-400/80" />
           )}
         </motion.div>
       </AnimatePresence>
@@ -64,7 +64,7 @@ export default function DrumsGuitarCard() {
             animate={{ opacity: 0, scale: 2 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
-            className="absolute inset-0 rounded-xl bg-cyan-400/20 pointer-events-none"
+            className="absolute inset-0 rounded-xl bg-emerald-400/20 pointer-events-none"
           />
         )}
       </AnimatePresence>

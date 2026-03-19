@@ -24,7 +24,7 @@ export default function Footer() {
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-slate-500 hover:text-cyan-400 transition-colors"
+                className="text-slate-500 hover:text-emerald-400 transition-colors"
                 aria-label={label}
               >
                 <Icon size={18} />
@@ -33,7 +33,7 @@ export default function Footer() {
           </div>
 
           <p className="text-slate-600 text-xs font-mono flex items-center gap-1">
-            Made with <LuHeart size={12} className="text-cyan-400/60" /> by Arya Krishnan
+            Made with <LuHeart size={12} className="text-emerald-400/60" /> by Arya Krishnan
           </p>
         </div>
       </div>

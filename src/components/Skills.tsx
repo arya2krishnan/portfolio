@@ -10,11 +10,11 @@ function SkillPill({ name, proficient }: { name: string; proficient: boolean }) 
     <span
       className={`inline-flex items-center gap-1 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md text-xs font-mono border transition-all hover:scale-105 hover:shadow-[0_0_12px_rgba(34,211,238,0.15)] cursor-default ${
         proficient
-          ? "bg-cyan-400/10 text-cyan-400 border-cyan-400/20"
+          ? "bg-emerald-400/10 text-emerald-400 border-emerald-400/20"
           : "bg-[#1a1a1a] text-slate-400 border-[#222]"
       }`}
     >
-      {proficient && <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />}
+      {proficient && <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />}
       {name}
     </span>
   );
@@ -49,7 +49,7 @@ export default function Skills() {
 
         <div className="mt-4 md:mt-6 flex items-center gap-6 text-xs text-slate-500 font-mono">
           <span className="flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
             Proficient
           </span>
           <span className="flex items-center gap-1.5">

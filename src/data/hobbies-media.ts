@@ -1,5 +1,5 @@
 // Media URLs for hobby interactions.
-// Replace placeholder strings with real Vercel Blob URLs after uploading.
+// Blob URLs from Vercel Blob Storage.
 
 export interface AudioTrack {
   src: string;
@@ -7,41 +7,55 @@ export interface AudioTrack {
   artist?: string;
 }
 
-export interface GalleryImage {
+export interface GalleryItem {
   src: string;
   alt: string;
   description?: string;
+  type: "image" | "video";
 }
+
+const BLOB = "https://x2gu29gptmtx0gyc.public.blob.vercel-storage.com";
 
 // Music Production — MP3 carousel
 export const musicTracks: AudioTrack[] = [
-  // { src: "https://your-blob-url.vercel-storage.com/track1.mp3", title: "Beat 1", artist: "Arya" },
+  { src: `${BLOB}/hobbies/music_production/dont-remix.mp3`, title: "Don't - Remix", artist: "Arya" },
+  { src: `${BLOB}/hobbies/music_production/hot-remix.mp3`, title: "Hot - Remix", artist: "Arya" },
+  { src: `${BLOB}/hobbies/music_production/no-guidance-afrohouse-remix.mp3`, title: "No Guidance - Afrohouse Remix", artist: "Arya" },
+  { src: `${BLOB}/hobbies/music_production/yukon-remix.mp3`, title: "Yukon - Remix", artist: "Arya" },
 ];
 
-// Coffee — image carousel with descriptions
-export const coffeeImages: GalleryImage[] = [
-  // { src: "https://...", alt: "Latte art", description: "Saturday morning pour-over session" },
+// Coffee — image/video carousel with descriptions
+export const coffeeImages: GalleryItem[] = [
+  { src: `${BLOB}/hobbies/coffee/1.jpg`, alt: "Coffee setup", type: "image" },
+  { src: `${BLOB}/hobbies/coffee/2.MP4.mp4`, alt: "Coffee making", type: "video" },
+  { src: `${BLOB}/hobbies/coffee/3.jpg`, alt: "Latte art", type: "image" },
+  { src: `${BLOB}/hobbies/coffee/4.jpg`, alt: "Coffee bar", type: "image" },
 ];
 
 // Cooking — image carousel
-export const cookingImages: GalleryImage[] = [
-  // { src: "https://...", alt: "Pasta dish" },
+export const cookingImages: GalleryItem[] = [
+  { src: `${BLOB}/hobbies/cooking/1.jpg`, alt: "Meal 1", type: "image" },
+  { src: `${BLOB}/hobbies/cooking/2.jpg`, alt: "Meal 2", type: "image" },
+  { src: `${BLOB}/hobbies/cooking/3.jpg`, alt: "Meal 3", type: "image" },
+  { src: `${BLOB}/hobbies/cooking/4.jpg`, alt: "Meal 4", type: "image" },
+  { src: `${BLOB}/hobbies/cooking/5.jpg`, alt: "Meal 5", type: "image" },
+  { src: `${BLOB}/hobbies/cooking/6.jpg`, alt: "Meal 6", type: "image" },
+  { src: `${BLOB}/hobbies/cooking/7.jpg`, alt: "Meal 7", type: "image" },
+  { src: `${BLOB}/hobbies/cooking/8.jpg`, alt: "Meal 8", type: "image" },
+  { src: `${BLOB}/hobbies/cooking/9.jpg`, alt: "Meal 9", type: "image" },
+  { src: `${BLOB}/hobbies/cooking/10.jpg`, alt: "Meal 10", type: "image" },
 ];
 
 // Hiking — image carousel
-export const hikingImages: GalleryImage[] = [
-  // { src: "https://...", alt: "Mountain summit" },
+export const hikingImages: GalleryItem[] = [
+  { src: `${BLOB}/hobbies/hiking/1.jpg`, alt: "Hike 1", type: "image" },
+  { src: `${BLOB}/hobbies/hiking/2.jpg`, alt: "Hike 2", type: "image" },
+  { src: `${BLOB}/hobbies/hiking/3.jpg`, alt: "Hike 3", type: "image" },
 ];
 
 // Sound effects for drums/guitar
 export const soundEffects = {
-  drumHit: "", // URL to badum-tss.mp3
-  guitarStrum: "", // URL to guitar-strum.mp3
-};
-
-// Travel destination photos — keyed by location name
-export const travelImages: Record<string, GalleryImage[]> = {
-  // "Tokyo, Kyoto & Osaka": [
-  //   { src: "https://...", alt: "Shibuya crossing" },
-  // ],
+  drumHit: `${BLOB}/soundeffects/badum-tss.mp3`,
+  guitarStrum: `${BLOB}/soundeffects/guitar-strum.mp3`,
+  jazzSong: `${BLOB}/soundeffects/jazz-song.mp3`,
 };

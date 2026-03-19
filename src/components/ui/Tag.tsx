@@ -6,7 +6,7 @@ interface TagProps {
 export default function Tag({ label, variant = "default" }: TagProps) {
   const styles = {
     default: "bg-[#1a1a1a] text-slate-400 border-[#222]",
-    accent: "bg-cyan-400/10 text-cyan-400 border-cyan-400/20",
+    accent: "bg-emerald-400/10 text-emerald-400 border-emerald-400/20",
   };
 
   return (

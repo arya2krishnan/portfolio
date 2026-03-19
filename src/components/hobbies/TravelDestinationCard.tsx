@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { LuMapPin } from "react-icons/lu";
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -8,14 +8,18 @@ import type { TravelDestination } from "@/data/resume";
 import Modal from "@/components/ui/Modal";
 import Carousel from "@/components/ui/Carousel";
 import Lightbox from "@/components/ui/Lightbox";
-import ImagePlaceholder from "@/components/ui/ImagePlaceholder";
 
 export default function TravelDestinationCard({ dest }: { dest: TravelDestination }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [coverIndex, setCoverIndex] = useState(0);
 
   const hasPhotos = dest.photos.length > 0;
+
+  // Find the first image (not video) for cover, falling back to coverIndex
+  const coverPhoto = dest.photos[coverIndex] || dest.photos[0];
+  const coverIsVideo = coverPhoto?.type === "video";
 
   return (
     <>
@@ -24,29 +28,32 @@ export default function TravelDestinationCard({ dest }: { dest: TravelDestinatio
         onClick={() => hasPhotos && setModalOpen(true)}
         className={`glow-border bg-[#111] rounded-lg overflow-hidden group ${hasPhotos ? "cursor-pointer" : "cursor-default"}`}
       >
-        {/* Cover image or placeholder */}
-        {hasPhotos ? (
+        {/* Cover image or video thumbnail */}
+        {hasPhotos && coverPhoto ? (
           <div className="relative aspect-video">
-            <Image
-              src={dest.photos[0].src}
-              alt={dest.photos[0].alt}
-              fill
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
-            />
+            {coverIsVideo ? (
+              <video
+                src={coverPhoto.src}
+                muted
+                playsInline
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+            ) : (
+              <Image
+                src={coverPhoto.src}
+                alt={coverPhoto.alt}
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-300"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              />
+            )}
           </div>
-        ) : (
-          <ImagePlaceholder label={`${dest.location} photo`} />
-        )}
+        ) : null}
 
         <div className="p-6 sm:p-8 md:p-10 flex items-center gap-3">
-          <LuMapPin size={14} className="text-cyan-400/60" />
+          <LuMapPin size={14} className="text-emerald-400/60" />
           <span className="text-white text-sm">{dest.location}</span>
           <span className="text-slate-500 text-xs">{dest.country}</span>
-          {hasPhotos && (
-            <span className="ml-auto text-slate-600 text-xs font-mono">
-              {dest.photos.length} photos
-            </span>
-          )}
         </div>
       </motion.div>
 
@@ -60,6 +67,7 @@ export default function TravelDestinationCard({ dest }: { dest: TravelDestinatio
           >
             <Carousel
               items={dest.photos}
+              onIndexChange={(i) => setCoverIndex(i)}
               renderItem={(photo, index) => (
                 <div
                   className="relative aspect-[4/3] rounded-lg overflow-hidden cursor-pointer"
@@ -68,12 +76,24 @@ export default function TravelDestinationCard({ dest }: { dest: TravelDestinatio
                     setLightboxOpen(true);
                   }}
                 >
-                  <Image
-                    src={photo.src}
-                    alt={photo.alt}
-                    fill
-                    className="object-cover"
-                  />
+                  {photo.type === "video" ? (
+                    <video
+                      src={photo.src}
+                      controls
+                      playsInline
+                      muted
+                      className="w-full h-full object-cover"
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                  ) : (
+                    <Image
+                      src={photo.src}
+                      alt={photo.alt}
+                      fill
+                      sizes="(max-width: 768px) 90vw, 700px"
+                      className="object-cover"
+                    />
+                  )}
                 </div>
               )}
             />

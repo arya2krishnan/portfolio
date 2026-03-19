@@ -80,7 +80,7 @@ export default function AudioPlayer({ src, title, artist }: AudioPlayerProps) {
       <div className="flex items-center gap-3">
         <button
           onClick={toggle}
-          className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-cyan-400/10 hover:bg-cyan-400/20 text-cyan-400 rounded-full transition-colors"
+          className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-emerald-400/10 hover:bg-emerald-400/20 text-emerald-400 rounded-full transition-colors"
         >
           {playing ? <LuPause size={14} /> : <LuPlay size={14} />}
         </button>
@@ -91,10 +91,10 @@ export default function AudioPlayer({ src, title, artist }: AudioPlayerProps) {
           onClick={seek}
         >
           <div
-            className="h-full bg-cyan-400 rounded-full relative transition-all"
+            className="h-full bg-emerald-400 rounded-full relative transition-all"
             style={{ width: `${progress}%` }}
           >
-            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-cyan-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-emerald-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
           </div>
         </div>
 

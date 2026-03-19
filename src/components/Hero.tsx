@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { LuGithub, LuLinkedin, LuMail, LuMapPin, LuTrophy } from "react-icons/lu";
@@ -13,9 +13,19 @@ export default function Hero() {
   const [showCursor, setShowCursor] = useState(true);
   const [clickCount, setClickCount] = useState(0);
   const [showAchievement, setShowAchievement] = useState(false);
-  const fullText = `> const arya = { role: "SWE", loc: "SF" };`;
 
+  const locations = ["SF", "NYC", "Berkeley", "Fremont"];
+  const locIndexRef = useRef(0);
+  const hasTypedOnce = useRef(false);
+  const isAnimating = useRef(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  const prefix = `> const arya = { role: "SWE", loc: "`;
+  const suffix = `" };`;
+
+  // Type out the full string on mount
   useEffect(() => {
+    const fullText = `${prefix}${locations[0]}${suffix}`;
     let i = 0;
     const interval = setInterval(() => {
       if (i < fullText.length) {
@@ -23,10 +33,56 @@ export default function Hero() {
         i++;
       } else {
         clearInterval(interval);
+        hasTypedOnce.current = true;
       }
     }, 35);
     return () => clearInterval(interval);
-  }, [fullText]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Cycle location when section scrolls into view
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && hasTypedOnce.current && !isAnimating.current) {
+          isAnimating.current = true;
+          const prevLoc = locations[locIndexRef.current];
+          locIndexRef.current = (locIndexRef.current + 1) % locations.length;
+          const newLoc = locations[locIndexRef.current];
+
+          // Phase 1: delete old location char by char
+          let deleteCount = 0;
+          const deleteInterval = setInterval(() => {
+            deleteCount++;
+            const remaining = prevLoc.slice(0, prevLoc.length - deleteCount);
+            setTypedText(`${prefix}${remaining}${suffix}`);
+            if (deleteCount >= prevLoc.length) {
+              clearInterval(deleteInterval);
+              // Phase 2: type new location char by char
+              let typeCount = 0;
+              const typeInterval = setInterval(() => {
+                typeCount++;
+                const typed = newLoc.slice(0, typeCount);
+                setTypedText(`${prefix}${typed}${suffix}`);
+                if (typeCount >= newLoc.length) {
+                  clearInterval(typeInterval);
+                  isAnimating.current = false;
+                }
+              }, 200);
+            }
+          }, 150);
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => setShowCursor((v) => !v), 530);
@@ -44,12 +100,12 @@ export default function Hero() {
   }, [clickCount]);
 
   return (
-    <section className="relative overflow-hidden">
+    <section ref={sectionRef} className="relative overflow-hidden">
       <DotWaveCanvas className="absolute inset-0 z-0" />
 
       {/* Gradient orbs */}
-      <div className="absolute top-1/4 -left-32 w-64 md:w-96 h-64 md:h-96 bg-cyan-500/5 rounded-full blur-3xl" />
-      <div className="absolute bottom-1/4 -right-32 w-64 md:w-96 h-64 md:h-96 bg-cyan-500/5 rounded-full blur-3xl" />
+      <div className="absolute top-1/4 -left-32 w-64 md:w-96 h-64 md:h-96 bg-emerald-500/5 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/4 -right-32 w-64 md:w-96 h-64 md:h-96 bg-emerald-500/5 rounded-full blur-3xl" />
 
       <div className="section-container relative z-10 pt-28 pb-10 sm:pt-32 sm:pb-12 md:pt-32 md:pb-16">
         <motion.div
@@ -60,7 +116,7 @@ export default function Hero() {
         >
           {/* Profile picture */}
           <div className="mb-4 md:mb-5">
-            <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full overflow-hidden border-2 border-cyan-400/30 shadow-[0_0_20px_rgba(34,211,238,0.15)]">
+            <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full overflow-hidden border-2 border-emerald-400/30 shadow-[0_0_20px_rgba(34,211,238,0.15)]">
               <Image
                 src="/images/arya-profile.jpg"
                 alt="Arya Krishnan"
@@ -82,13 +138,13 @@ export default function Hero() {
 
           {/* Terminal line */}
           <div className="font-mono text-xs sm:text-sm text-slate-400 mb-4 bg-[#111] border border-[#222] rounded-lg px-3 sm:px-4 py-2 sm:py-2.5 inline-block max-w-full overflow-x-auto">
-            <span className="text-cyan-400 whitespace-nowrap">{typedText}</span>
-            <span className={`text-cyan-400 ${showCursor ? "opacity-100" : "opacity-0"}`}>
+            <span className="text-emerald-400 whitespace-nowrap">{typedText}</span>
+            <span className={`text-emerald-400 ${showCursor ? "opacity-100" : "opacity-0"}`}>
               |
             </span>
           </div>
 
-          <p className="text-base sm:text-lg md:text-xl text-cyan-400 font-mono mb-2 md:mb-3">
+          <p className="text-base sm:text-lg md:text-xl text-emerald-400 font-mono mb-2 md:mb-3">
             {personalInfo.title}
           </p>
 
@@ -116,7 +172,7 @@ export default function Hero() {
                 rel="noopener noreferrer"
                 whileHover={{ y: -3, scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-2 px-3 py-2 bg-[#161616] border border-[#222] rounded-lg text-slate-300 hover:text-cyan-400 hover:border-cyan-400/30 transition-all text-xs font-mono"
+                className="flex items-center gap-2 px-3 py-2 bg-[#161616] border border-[#222] rounded-lg text-slate-300 hover:text-emerald-400 hover:border-emerald-400/30 transition-all text-xs font-mono"
               >
                 <Icon size={16} />
                 {label}
@@ -134,10 +190,10 @@ export default function Hero() {
       {/* Achievement toast */}
       {showAchievement && (
         <div className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 z-50 achievement-toast">
-          <div className="bg-[#161616] border border-cyan-400/40 rounded-lg px-4 sm:px-6 py-3 sm:py-4 shadow-lg flex items-center gap-3">
-            <LuTrophy className="text-cyan-400 shrink-0" size={24} />
+          <div className="bg-[#161616] border border-emerald-400/40 rounded-lg px-4 sm:px-6 py-3 sm:py-4 shadow-lg flex items-center gap-3">
+            <LuTrophy className="text-emerald-400 shrink-0" size={24} />
             <div>
-              <p className="text-cyan-400 font-mono text-sm font-semibold">
+              <p className="text-emerald-400 font-mono text-sm font-semibold">
                 Achievement Unlocked!
               </p>
               <p className="text-slate-400 text-xs">

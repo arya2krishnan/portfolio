@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence, type PanInfo } from "framer-motion";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 
@@ -9,6 +9,7 @@ interface CarouselProps<T> {
   renderItem: (item: T, index: number) => React.ReactNode;
   showDots?: boolean;
   showArrows?: boolean;
+  onIndexChange?: (index: number) => void;
 }
 
 const SWIPE_THRESHOLD = 50;
@@ -33,8 +34,19 @@ export default function Carousel<T>({
   renderItem,
   showDots = true,
   showArrows = true,
+  onIndexChange,
 }: CarouselProps<T>) {
   const [[current, direction], setCurrent] = useState([0, 0]);
+  const isFirst = useRef(true);
+
+  // Fire onIndexChange after state settles, skip initial mount
+  useEffect(() => {
+    if (isFirst.current) {
+      isFirst.current = false;
+      return;
+    }
+    onIndexChange?.(current);
+  }, [current, onIndexChange]);
 
   const paginate = useCallback(
     (dir: number) => {
@@ -107,7 +119,7 @@ export default function Carousel<T>({
               onClick={() => setCurrent([i, i > current ? 1 : -1])}
               className={`w-2 h-2 rounded-full transition-all ${
                 i === current
-                  ? "bg-cyan-400 w-6"
+                  ? "bg-emerald-400 w-6"
                   : "bg-slate-600 hover:bg-slate-500"
               }`}
             />

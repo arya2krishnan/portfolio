@@ -116,7 +116,7 @@ export default function AuthorizeMusicPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter password"
-            className="w-full px-4 py-3 bg-[#0a0a0a] border border-[#333] rounded-lg text-white placeholder-slate-600 focus:outline-none focus:border-cyan-400/50"
+            className="w-full px-4 py-3 bg-[#0a0a0a] border border-[#333] rounded-lg text-white placeholder-slate-600 focus:outline-none focus:border-emerald-400/50"
             autoFocus
           />
           {authError && (
@@ -124,7 +124,7 @@ export default function AuthorizeMusicPage() {
           )}
           <button
             type="submit"
-            className="w-full px-4 py-3 bg-cyan-500 hover:bg-cyan-400 text-black rounded-lg font-semibold transition-colors"
+            className="w-full px-4 py-3 bg-emerald-500 hover:bg-emerald-400 text-black rounded-lg font-semibold transition-colors"
           >
             Enter
           </button>
@@ -146,7 +146,7 @@ export default function AuthorizeMusicPage() {
         <button
           onClick={handleAuthorize}
           disabled={status === "loading"}
-          className="w-full px-4 py-3 bg-cyan-500 hover:bg-cyan-400 disabled:bg-slate-700 text-black disabled:text-slate-400 rounded-lg font-semibold transition-colors"
+          className="w-full px-4 py-3 bg-emerald-500 hover:bg-emerald-400 disabled:bg-slate-700 text-black disabled:text-slate-400 rounded-lg font-semibold transition-colors"
         >
           {status === "loading" ? "Authorizing..." : "Authorize Apple Music"}
         </button>

@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 @theme {
-  --color-cyan-400: #22d3ee;
-  --color-cyan-500: #06b6d4;
-  --color-cyan-600: #0891b2;
-  --color-cyan-900: #164e63;
+  --color-emerald-400: #34d399;
+  --color-emerald-500: #10b981;
+  --color-emerald-600: #059669;
+  --color-emerald-900: #064e3b;
   --color-slate-900: #0f172a;
   --color-slate-800: #1e293b;
   --color-slate-700: #334155;
@@ -19,12 +19,12 @@
   --bg-secondary: #111111;
   --bg-card: #161616;
   --border-subtle: #222222;
-  --accent: #22d3ee;
-  --accent-dim: #0891b2;
+  --accent: #34d399;
+  --accent-dim: #059669;
   --text-primary: #e2e8f0;
   --text-secondary: #94a3b8;
-  --glow: 0 0 20px rgba(34, 211, 238, 0.15);
-  --glow-strong: 0 0 40px rgba(34, 211, 238, 0.25);
+  --glow: 0 0 20px rgba(52, 211, 153, 0.15);
+  --glow-strong: 0 0 40px rgba(52, 211, 153, 0.25);
 }
 
 @layer base {
@@ -50,7 +50,7 @@ body {
 }
 
 ::selection {
-  background: rgba(34, 211, 238, 0.3);
+  background: rgba(52, 211, 153, 0.3);
   color: #fff;
 }
 
@@ -75,7 +75,7 @@ body {
   transition: all 0.3s ease;
 }
 .glow-border:hover {
-  border-color: rgba(34, 211, 238, 0.3);
+  border-color: rgba(52, 211, 153, 0.3);
   box-shadow: var(--glow);
 }
 

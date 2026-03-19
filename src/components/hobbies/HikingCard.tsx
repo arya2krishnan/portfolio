@@ -20,16 +20,26 @@ export default function HikingCard() {
         className={`glow-border bg-[#111] rounded-xl flex flex-col items-center gap-4 md:gap-5 ${hasImages ? "cursor-pointer" : "cursor-default"}`}
         style={{ padding: "clamp(0.75rem, 1.5vw, 1.25rem)" }}
       >
-        <LuMountain size={28} className="text-cyan-400/80" />
+        <LuMountain size={28} className="text-emerald-400/80" />
         <span className="text-slate-300 text-sm text-center">Hiking</span>
       </motion.div>
 
       <Modal isOpen={open} onClose={() => setOpen(false)} title="Hiking">
         <Carousel
           items={hikingImages}
-          renderItem={(img) => (
+          renderItem={(item) => (
             <div className="relative aspect-[4/3] rounded-lg overflow-hidden">
-              <Image src={img.src} alt={img.alt} fill className="object-cover" />
+              {item.type === "video" ? (
+                <video
+                  src={item.src}
+                  controls
+                  playsInline
+                  muted
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <Image src={item.src} alt={item.alt} fill className="object-cover" />
+              )}
             </div>
           )}
         />

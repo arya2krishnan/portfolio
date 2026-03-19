@@ -16,7 +16,7 @@ export default function SectionHeader({ icon: Icon, title }: SectionHeaderProps)
       viewport={{ once: true }}
       className="flex items-center gap-3 mb-6 sm:mb-8 md:mb-10"
     >
-      <Icon className="text-cyan-400" size={24} />
+      <Icon className="text-emerald-400" size={24} />
       <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">{title}</h2>
     </motion.div>
   );

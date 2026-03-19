@@ -8,7 +8,7 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Arya Krishnan | Software Engineer",
+  title: "Arya Krishnan",
   description:
     "Software Engineer at Atlassian. UC Berkeley CS & Economics. Building products that scale.",
   keywords: ["software engineer", "full stack", "Atlassian", "UC Berkeley"],
@@ -17,7 +17,14 @@ export const metadata: Metadata = {
     apple: "/images/arya-profile.jpg",
   },
   openGraph: {
-    title: "Arya Krishnan | Software Engineer",
+    title: "Arya Krishnan",
+    description:
+      "Software Engineer at Atlassian. UC Berkeley CS & Economics. Building products that scale.",
+    siteName: "Arya Krishnan",
+    images: ["/images/arya-profile.jpg"],
+  },
+  twitter: {
+    title: "Arya Krishnan",
     description:
       "Software Engineer at Atlassian. UC Berkeley CS & Economics. Building products that scale.",
     images: ["/images/arya-profile.jpg"],

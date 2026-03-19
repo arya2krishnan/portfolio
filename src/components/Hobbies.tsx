@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import {
   LuMusic,
   LuDisc3,
@@ -10,6 +10,7 @@ import {
 } from "react-icons/lu";
 import { motion } from "framer-motion";
 import { hobbies, travels } from "@/data/resume";
+import { soundEffects } from "@/data/hobbies-media";
 import SectionHeader from "@/components/ui/SectionHeader";
 import FadeInView from "@/components/ui/FadeInView";
 import HobbyCard from "@/components/hobbies/HobbyCard";
@@ -18,11 +19,25 @@ import TravelDestinationCard from "@/components/hobbies/TravelDestinationCard";
 function VinylPlayer() {
   const [spinning, setSpinning] = useState(false);
   const [rpm, setRpm] = useState(0);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const toggleSpin = useCallback(() => {
-    setSpinning((prev) => !prev);
-    setRpm((prev) => (prev === 0 ? 33 : 0));
-  }, []);
+    const nextSpinning = !spinning;
+    setSpinning(nextSpinning);
+    setRpm(nextSpinning ? 33 : 0);
+
+    if (nextSpinning && soundEffects.jazzSong) {
+      if (!audioRef.current) {
+        audioRef.current = new Audio(soundEffects.jazzSong);
+        audioRef.current.loop = true;
+        audioRef.current.volume = 0.4;
+      }
+      audioRef.current.play().catch(() => {});
+    } else if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+  }, [spinning]);
 
   return (
     <div className="flex flex-col items-center gap-4">
@@ -51,8 +66,8 @@ function VinylPlayer() {
               />
             ))}
             {/* Label */}
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-cyan-400/20 to-cyan-600/20 border border-cyan-400/30 flex items-center justify-center z-10">
-              <LuDisc3 className="text-cyan-400" size={24} />
+            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-emerald-400/20 to-emerald-600/20 border border-emerald-400/30 flex items-center justify-center z-10">
+              <LuDisc3 className="text-emerald-400" size={24} />
             </div>
           </motion.div>
         </div>
@@ -68,7 +83,7 @@ function VinylPlayer() {
 
       <button
         onClick={toggleSpin}
-        className="flex items-center gap-2 px-4 py-2 bg-[#161616] border border-[#222] rounded-lg text-slate-300 hover:text-cyan-400 hover:border-cyan-400/30 transition-all text-sm font-mono"
+        className="flex items-center gap-2 px-4 py-2 bg-[#161616] border border-[#222] rounded-lg text-slate-300 hover:text-emerald-400 hover:border-emerald-400/30 transition-all text-sm font-mono"
       >
         {spinning ? <LuPause size={14} /> : <LuPlay size={14} />}
         {spinning ? "Stop" : "Play"}
@@ -96,7 +111,7 @@ function TravelGallery() {
   return (
     <div className="mt-20 md:mt-24">
       <div className="flex items-center gap-3 mb-10 md:mb-12">
-        <LuPlane className="text-cyan-400" size={24} />
+        <LuPlane className="text-emerald-400" size={24} />
         <h3 className="text-lg md:text-xl font-semibold text-white">Travels</h3>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
@@ -114,7 +129,7 @@ function DJVideoSection() {
   return (
     <div className="mb-16 md:mb-20">
       <h3 className="text-lg md:text-xl font-semibold text-white mb-6 md:mb-8 flex items-center gap-3">
-        <LuDisc3 className="text-cyan-400" size={24} />
+        <LuDisc3 className="text-emerald-400" size={24} />
         DJ Showcase
       </h3>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-center">
@@ -129,9 +144,9 @@ function DJVideoSection() {
             className="rounded-lg"
           />
           <div className="mt-2 text-[10px] text-slate-500 font-mono truncate">
-            <a href="https://soundcloud.com/arya-krishnan-36947335" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-400 transition-colors">Arya Krishnan</a>
+            <a href="https://soundcloud.com/arya-krishnan-36947335" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-400 transition-colors">Arya Krishnan</a>
             {" · "}
-            <a href="https://soundcloud.com/arya-krishnan-36947335/halloween-dj-set" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-400 transition-colors">Halloween DJ Set - Hiphop/RnB/House/Pop</a>
+            <a href="https://soundcloud.com/arya-krishnan-36947335/halloween-dj-set" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-400 transition-colors">Halloween DJ Set - Hiphop/RnB/House/Pop</a>
           </div>
         </div>
         <VinylPlayer />

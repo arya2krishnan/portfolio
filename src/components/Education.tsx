@@ -21,7 +21,7 @@ export default function Education() {
             <div className="flex items-start justify-between flex-wrap gap-4">
               <div>
                 <h3 className="text-white font-semibold text-lg md:text-xl mb-2">{education.school}</h3>
-                <p className="text-cyan-400/80 font-mono text-sm md:text-base mt-2">
+                <p className="text-emerald-400/80 font-mono text-sm md:text-base mt-2">
                   {education.degrees.join(" | ")}
                 </p>
               </div>
@@ -30,7 +30,7 @@ export default function Education() {
 
             <button
               onClick={() => setShowCourses(!showCourses)}
-              className="flex items-center gap-2 mt-6 text-slate-400 hover:text-cyan-400 transition-colors text-sm md:text-base font-mono"
+              className="flex items-center gap-2 mt-6 text-slate-400 hover:text-emerald-400 transition-colors text-sm md:text-base font-mono"
             >
               <span>Relevant Coursework</span>
               <motion.div

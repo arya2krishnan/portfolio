@@ -26,7 +26,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             )}
             <div>
               <h3 className="text-white font-semibold text-lg md:text-xl mb-1">{project.name}</h3>
-              <p className="text-cyan-400/80 font-mono text-sm">{project.tagline}</p>
+              <p className="text-emerald-400/80 font-mono text-sm">{project.tagline}</p>
             </div>
           </div>
           {project.award && (
@@ -56,7 +56,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             href={project.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-6 inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 text-sm font-mono transition-colors"
+            className="mt-6 inline-flex items-center gap-2 text-emerald-400 hover:text-emerald-300 text-sm font-mono transition-colors"
           >
             <LuExternalLink size={14} />
             View Project
