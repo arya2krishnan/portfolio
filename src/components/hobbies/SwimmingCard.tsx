@@ -40,7 +40,7 @@ function Wave({
         <path
           d="M0,40 C100,10 200,70 400,40 C600,10 700,70 900,40 C1000,20 1100,60 1200,40 L1200,120 L0,120 Z"
           fill="currentColor"
-          className="text-emerald-400"
+          className="text-blue-400"
         />
       </svg>
     </motion.div>
