@@ -285,7 +285,6 @@ export const travels: TravelDestination[] = [
   },
   {
     location: "Bali", country: "Indonesia", photos: [
-      { src: `${BLOB}/travel/bali/1.jpg`, alt: "Bali 1", type: "image" },
       { src: `${BLOB}/travel/bali/2.jpg`, alt: "Bali 2", type: "image" },
       { src: `${BLOB}/travel/bali/3.MP4.mp4`, alt: "Bali video 1", type: "video" },
       { src: `${BLOB}/travel/bali/4.png`, alt: "Bali 4", type: "image" },
@@ -294,6 +293,7 @@ export const travels: TravelDestination[] = [
       { src: `${BLOB}/travel/bali/7.jpg`, alt: "Bali 7", type: "image" },
       { src: `${BLOB}/travel/bali/8.jpg`, alt: "Bali 8", type: "image" },
       { src: `${BLOB}/travel/bali/9.MP4.mp4`, alt: "Bali video 2", type: "video" },
+      { src: `${BLOB}/travel/bali/1.jpg`, alt: "Bali 1", type: "image" },
     ],
   },
   {
