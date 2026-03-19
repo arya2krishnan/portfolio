@@ -67,7 +67,7 @@ export default function Navbar() {
             className="flex items-center gap-2 text-cyan-400 font-mono text-sm font-semibold hover:text-cyan-300 transition-colors"
           >
             <LuTerminal size={18} />
-            <span>arya.dev</span>
+            <span>aryakrishnan.dev</span>
           </a>
 
           {/* Desktop nav */}
