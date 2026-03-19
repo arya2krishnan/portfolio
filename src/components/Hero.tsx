@@ -72,9 +72,9 @@ export default function Hero() {
                   clearInterval(typeInterval);
                   isAnimating.current = false;
                 }
-              }, 200);
+              }, 150);
             }
-          }, 150);
+          }, 100);
         }
       },
       { threshold: 0.5 }
