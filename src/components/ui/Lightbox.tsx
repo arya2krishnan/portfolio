@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { LuX, LuChevronLeft, LuChevronRight } from "react-icons/lu";
@@ -16,7 +16,7 @@ interface LightboxProps {
   images: LightboxItem[];
   startIndex?: number;
   isOpen: boolean;
-  onClose: () => void;
+  onClose: (finalIndex?: number) => void;
 }
 
 export default function Lightbox({
@@ -27,20 +27,29 @@ export default function Lightbox({
 }: LightboxProps) {
   const [index, setIndex] = useState(startIndex);
   const [zoomed, setZoomed] = useState(false);
+  const indexRef = useRef(startIndex);
+
+  useEffect(() => {
+    indexRef.current = index;
+  }, [index]);
 
   useEffect(() => {
     if (isOpen) setIndex(startIndex);
   }, [isOpen, startIndex]);
 
+  const closeWithIndex = useCallback(() => {
+    onClose(indexRef.current);
+  }, [onClose]);
+
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") closeWithIndex();
       if (e.key === "ArrowRight")
         setIndex((i) => (i + 1) % images.length);
       if (e.key === "ArrowLeft")
         setIndex((i) => (i - 1 + images.length) % images.length);
     },
-    [onClose, images.length]
+    [closeWithIndex, images.length]
   );
 
   useEffect(() => {
@@ -69,12 +78,12 @@ export default function Lightbox({
         className="fixed inset-0 z-[60] flex items-center justify-center bg-black/90"
         onClick={() => {
           if (zoomed) setZoomed(false);
-          else onClose();
+          else closeWithIndex();
         }}
       >
         {/* Close */}
         <button
-          onClick={onClose}
+          onClick={closeWithIndex}
           className="absolute top-4 right-4 z-20 p-2 text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
         >
           <LuX size={24} />

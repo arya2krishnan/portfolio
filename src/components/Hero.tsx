@@ -5,7 +5,6 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { LuGithub, LuLinkedin, LuMail, LuMapPin, LuTrophy } from "react-icons/lu";
 import { personalInfo } from "@/data/resume";
-import NowPlaying from "@/components/NowPlaying";
 import DotWaveCanvas from "@/components/ui/DotWaveCanvas";
 
 export default function Hero() {
@@ -72,9 +71,9 @@ export default function Hero() {
                   clearInterval(typeInterval);
                   isAnimating.current = false;
                 }
-              }, 150);
+              }, 100);
             }
-          }, 100);
+          }, 60);
         }
       },
       { threshold: 0.5 }
@@ -184,10 +183,29 @@ export default function Hero() {
             ))}
           </div>
 
-          {/* Now Playing */}
-          <div className="mt-5 md:mt-6">
-            <NowPlaying />
-          </div>
+          {/* Listen link */}
+          <button
+            onClick={() => document.getElementById("hobbies")?.scrollIntoView({ behavior: "smooth" })}
+            className="mt-4 text-emerald-400/70 hover:text-emerald-400 text-xs font-mono transition-colors flex items-center gap-1.5"
+          >
+            <span className="flex items-end gap-[2px] h-3">
+              {[0, 1, 2, 3].map((i) => (
+                <motion.span
+                  key={i}
+                  animate={{ height: ["3px", "12px", "6px", "10px", "3px"] }}
+                  transition={{
+                    duration: 1.2,
+                    repeat: Infinity,
+                    delay: i * 0.15,
+                    ease: "easeInOut",
+                  }}
+                  className="w-[2px] bg-emerald-400 rounded-full inline-block"
+                />
+              ))}
+            </span>
+            See what I&apos;m listening to →
+          </button>
+
         </motion.div>
       </div>
 

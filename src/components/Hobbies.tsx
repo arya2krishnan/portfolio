@@ -18,6 +18,7 @@ import FadeInView from "@/components/ui/FadeInView";
 import HobbyCard from "@/components/hobbies/HobbyCard";
 import TravelDestinationCard from "@/components/hobbies/TravelDestinationCard";
 import SongRecForm from "@/components/SongRecForm";
+import NowPlaying from "@/components/NowPlaying";
 
 function VinylPlayer() {
   const [spinning, setSpinning] = useState(false);
@@ -169,6 +170,9 @@ export default function Hobbies() {
     <section id="hobbies" className="py-8 sm:py-10 md:py-12 relative">
       <div className="section-container">
         <SectionHeader icon={LuKeyRound} title="Decoded" />
+        <div className="mb-16 md:mb-20">
+          <NowPlaying />
+        </div>
         <DJVideoSection />
         <SongRecForm />
         <HobbyGrid />

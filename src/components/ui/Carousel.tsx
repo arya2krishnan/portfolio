@@ -10,6 +10,7 @@ interface CarouselProps<T> {
   showDots?: boolean;
   showArrows?: boolean;
   onIndexChange?: (index: number) => void;
+  externalIndex?: number;
 }
 
 const SWIPE_THRESHOLD = 50;
@@ -35,9 +36,17 @@ export default function Carousel<T>({
   showDots = true,
   showArrows = true,
   onIndexChange,
+  externalIndex,
 }: CarouselProps<T>) {
   const [[current, direction], setCurrent] = useState([0, 0]);
   const isFirst = useRef(true);
+
+  // Sync from external index (e.g. lightbox closed on a different slide)
+  useEffect(() => {
+    if (externalIndex !== undefined && externalIndex >= 0 && externalIndex !== current) {
+      setCurrent([externalIndex, externalIndex > current ? 1 : -1]);
+    }
+  }, [externalIndex]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Fire onIndexChange after state settles, skip initial mount
   useEffect(() => {

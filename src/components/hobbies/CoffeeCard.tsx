@@ -6,10 +6,13 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Modal from "@/components/ui/Modal";
 import Carousel from "@/components/ui/Carousel";
+import Lightbox from "@/components/ui/Lightbox";
 import { coffeeImages } from "@/data/hobbies-media";
 
 export default function CoffeeCard() {
   const [open, setOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(-1);
+  const [carouselSync, setCarouselSync] = useState<number | undefined>(undefined);
   const hasImages = coffeeImages.length > 0;
 
   return (
@@ -27,9 +30,13 @@ export default function CoffeeCard() {
       <Modal isOpen={open} onClose={() => setOpen(false)} title="Coffee">
         <Carousel
           items={coffeeImages}
-          renderItem={(item) => (
+          externalIndex={carouselSync}
+          renderItem={(item, index) => (
             <div className="space-y-3">
-              <div className="relative aspect-[4/3] rounded-lg overflow-hidden">
+              <div
+                className="relative aspect-[4/3] rounded-lg overflow-hidden cursor-pointer"
+                onClick={() => setLightboxIndex(index)}
+              >
                 {item.type === "video" ? (
                   <video
                     src={item.src}
@@ -44,6 +51,7 @@ export default function CoffeeCard() {
                     alt={item.alt}
                     fill
                     className="object-cover"
+                    sizes="(max-width: 640px) 90vw, 600px"
                   />
                 )}
               </div>
@@ -54,6 +62,16 @@ export default function CoffeeCard() {
           )}
         />
       </Modal>
+
+      <Lightbox
+        images={coffeeImages}
+        startIndex={lightboxIndex >= 0 ? lightboxIndex : 0}
+        isOpen={lightboxIndex >= 0}
+        onClose={(finalIndex) => {
+          setCarouselSync(finalIndex);
+          setLightboxIndex(-1);
+        }}
+      />
     </>
   );
 }

@@ -14,6 +14,7 @@ export default function TravelDestinationCard({ dest }: { dest: TravelDestinatio
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [coverIndex, setCoverIndex] = useState(0);
+  const [carouselSync, setCarouselSync] = useState<number | undefined>(undefined);
 
   const hasPhotos = dest.photos.length > 0;
 
@@ -67,6 +68,7 @@ export default function TravelDestinationCard({ dest }: { dest: TravelDestinatio
           >
             <Carousel
               items={dest.photos}
+              externalIndex={carouselSync}
               onIndexChange={(i) => setCoverIndex(i)}
               renderItem={(photo, index) => (
                 <div
@@ -103,7 +105,10 @@ export default function TravelDestinationCard({ dest }: { dest: TravelDestinatio
             images={dest.photos}
             startIndex={lightboxIndex}
             isOpen={lightboxOpen}
-            onClose={() => setLightboxOpen(false)}
+            onClose={(finalIndex) => {
+              if (finalIndex !== undefined) setCarouselSync(finalIndex);
+              setLightboxOpen(false);
+            }}
           />
         </>
       )}
