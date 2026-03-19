@@ -32,6 +32,9 @@ yarn-error.log*
 # local data storage
 .data/
 
+# media files (uploaded to Vercel Blob)
+/media/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
