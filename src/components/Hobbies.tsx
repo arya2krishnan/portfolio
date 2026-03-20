@@ -25,10 +25,27 @@ function VinylPlayer() {
   const [rpm, setRpm] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
+  const rpmToPlaybackRate = (r: number) => {
+    // 45 RPM = normal speed (1.0x), scale others proportionally
+    if (r === 0) return 1;
+    return r / 45;
+  };
+
+  const handleRpmChange = useCallback(
+    (newRpm: number) => {
+      setRpm(newRpm);
+      if (audioRef.current) {
+        audioRef.current.playbackRate = rpmToPlaybackRate(newRpm);
+      }
+    },
+    []
+  );
+
   const toggleSpin = useCallback(() => {
     const nextSpinning = !spinning;
     setSpinning(nextSpinning);
-    setRpm(nextSpinning ? 33 : 0);
+    const startRpm = nextSpinning ? 45 : 0;
+    setRpm(startRpm);
 
     if (nextSpinning && soundEffects.jazzSong) {
       if (!audioRef.current) {
@@ -36,6 +53,7 @@ function VinylPlayer() {
         audioRef.current.loop = true;
         audioRef.current.volume = 0.4;
       }
+      audioRef.current.playbackRate = rpmToPlaybackRate(startRpm);
       audioRef.current.play().catch(() => {});
     } else if (audioRef.current) {
       audioRef.current.pause();
@@ -92,8 +110,45 @@ function VinylPlayer() {
         {spinning ? <LuPause size={14} /> : <LuPlay size={14} />}
         {spinning ? "Stop" : "Play"}
       </button>
+      {spinning && (
+        <div className="w-full max-w-[200px]">
+          <div className="relative">
+            <input
+              type="range"
+              min={33}
+              max={78}
+              step={1}
+              value={rpm}
+              onChange={(e) => handleRpmChange(Number(e.target.value))}
+              className="w-full h-1 bg-[#222] rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-emerald-400 [&::-webkit-slider-thumb]:shadow-[0_0_6px_rgba(52,211,153,0.5)] [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-emerald-400 [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:cursor-pointer"
+            />
+          </div>
+          {/* RPM labels aligned to slider positions */}
+          <div className="relative h-4 mt-1">
+            {[33, 45, 78].map((tick) => {
+              const pct = ((tick - 33) / (78 - 33)) * 100;
+              // Account for thumb width (6px half = ~3% of 200px track)
+              const adjusted = `calc(${pct}% + ${6 - pct * 0.12}px)`;
+              return (
+                <button
+                  key={tick}
+                  onClick={() => handleRpmChange(tick)}
+                  className={`absolute text-[10px] font-mono transition-colors -translate-x-1/2 ${
+                    rpm === tick
+                      ? "text-emerald-400"
+                      : "text-slate-600 hover:text-slate-400"
+                  }`}
+                  style={{ left: adjusted }}
+                >
+                  {tick}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
       <p className="text-slate-600 text-xs font-mono mb-4">
-        {spinning ? `${rpm} RPM` : "Click to spin the vinyl"}
+        {spinning ? `${rpm} RPM · ${rpmToPlaybackRate(rpm).toFixed(2)}x` : "Click to spin the vinyl"}
       </p>
     </div>
   );
