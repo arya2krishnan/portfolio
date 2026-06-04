@@ -15,11 +15,11 @@ const mono = JetBrains_Mono({
 const OG_IMAGE = "https://x2gu29gptmtx0gyc.public.blob.vercel-storage.com/dj/photos/4e.jpg";
 
 export const metadata: Metadata = {
-  title: "Arya — DJ",
+  title: "DJ Arya",
   description:
     "DJ Arya — 5+ years DJing private events. Weddings, birthdays, themed nights. Currently booking.",
   openGraph: {
-    title: "Arya — DJ",
+    title: "DJ Arya",
     description:
       "5+ years DJing weddings, birthdays & themed nights. Currently booking.",
     images: [{ url: OG_IMAGE, width: 3444, height: 4590 }],
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Arya — DJ",
+    title: "DJ Arya",
     description:
       "5+ years DJing weddings, birthdays & themed nights. Currently booking.",
     images: [OG_IMAGE],
