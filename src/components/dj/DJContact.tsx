@@ -7,8 +7,8 @@ import FadeInView from "@/components/ui/FadeInView";
 const contacts = [
   {
     label: "Email",
-    value: "arya2krishnan@gmail.com",
-    href: "mailto:arya2krishnan@gmail.com",
+    value: "arkadebeatss@gmail.com",
+    href: "mailto:arkadebeatss@gmail.com",
     icon: LuMail,
   },
   {
