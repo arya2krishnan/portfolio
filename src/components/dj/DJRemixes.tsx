@@ -8,34 +8,20 @@ import FadeInView from "@/components/ui/FadeInView";
 const BLOB = "https://x2gu29gptmtx0gyc.public.blob.vercel-storage.com";
 
 const remixes = [
-  {
-    title: "Don't — Remix",
-    src: `${BLOB}/hobbies/music_production/dont-remix.mp3`,
-  },
-  {
-    title: "Hot — Remix",
-    src: `${BLOB}/hobbies/music_production/hot-remix.mp3`,
-  },
-  {
-    title: "No Guidance — Afro House Remix",
-    src: `${BLOB}/hobbies/music_production/no-guidance-afrohouse-remix.mp3`,
-  },
-  {
-    title: "Yukon — Remix",
-    src: `${BLOB}/hobbies/music_production/yukon-remix.mp3`,
-  },
-  {
-    title: "Swang x Cloonee — Edit",
-    src: `${BLOB}/hobbies/music_production/swang-x-cloonee.mp3`,
-  },
-  {
-    title: "Stay x Low Life — Edit",
-    src: `${BLOB}/hobbies/music_production/fisher-x-low-life.mp3`,
-  },
+  { title: "Don't — Remix", src: `${BLOB}/hobbies/music_production/dont-remix.mp3` },
+  { title: "Hot — Remix", src: `${BLOB}/hobbies/music_production/hot-remix.mp3` },
+  { title: "No Guidance — Afro House Remix", src: `${BLOB}/hobbies/music_production/no-guidance-afrohouse-remix.mp3` },
+  { title: "Yukon — Remix", src: `${BLOB}/hobbies/music_production/yukon-remix.mp3` },
+  { title: "Swang x Cloonee — Edit", src: `${BLOB}/hobbies/music_production/swang-x-cloonee.mp3` },
+  { title: "Stay x Low Life — Edit", src: `${BLOB}/hobbies/music_production/fisher-x-low-life.mp3` },
 ];
+
+// Module-level unique id counter
+let nextId = 0;
 
 function RemixPlayer({ title, src }: { title: string; src: string }) {
   const audioRef = useRef<HTMLAudioElement>(null);
+  const idRef = useRef(`remix-${nextId++}`);
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -56,126 +42,62 @@ function RemixPlayer({ title, src }: { title: string; src: string }) {
     };
   }, []);
 
+  // Stop this player when another one starts
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const { id } = (e as CustomEvent).detail;
+      if (id !== idRef.current) {
+        audioRef.current?.pause();
+        setPlaying(false);
+      }
+    };
+    window.addEventListener("dj:play", handler);
+    return () => window.removeEventListener("dj:play", handler);
+  }, []);
+
   const toggle = useCallback(() => {
     const audio = audioRef.current;
     if (!audio) return;
     if (playing) {
       audio.pause();
+      setPlaying(false);
     } else {
+      // Notify all other players to stop
+      window.dispatchEvent(new CustomEvent("dj:play", { detail: { id: idRef.current } }));
       audio.play();
+      setPlaying(true);
     }
-    setPlaying(!playing);
   }, [playing]);
 
-  const seek = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      const audio = audioRef.current;
-      if (!audio || !duration) return;
-      const rect = e.currentTarget.getBoundingClientRect();
-      const pct = (e.clientX - rect.left) / rect.width;
-      audio.currentTime = pct * duration;
-    },
-    [duration]
-  );
+  const seek = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const audio = audioRef.current;
+    if (!audio || !duration) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    audio.currentTime = ((e.clientX - rect.left) / rect.width) * duration;
+  }, [duration]);
 
-  const fmt = (s: number) => {
-    const m = Math.floor(s / 60);
-    const sec = Math.floor(s % 60);
-    return `${m}:${sec.toString().padStart(2, "0")}`;
-  };
-
+  const fmt = (s: number) => `${Math.floor(s / 60)}:${Math.floor(s % 60).toString().padStart(2, "0")}`;
   const progress = duration ? (currentTime / duration) * 100 : 0;
 
   return (
     <motion.div
       whileHover={{ borderColor: "rgba(245,158,11,0.4)" }}
-      style={{
-        backgroundColor: "#111",
-        border: "1px solid #2a2a2a",
-        borderRadius: "0.5rem",
-        padding: "1.25rem",
-        transition: "border-color 0.2s",
-      }}
+      style={{ backgroundColor: "#111", border: "1px solid #2a2a2a", borderRadius: "0.5rem", padding: "1.25rem", transition: "border-color 0.2s" }}
     >
       <audio ref={audioRef} src={src} preload="metadata" />
-
-      <p
-        style={{
-          fontFamily: "var(--font-mono)",
-          fontSize: "0.8rem",
-          color: "#e2e8f0",
-          marginBottom: "0.25rem",
-          fontWeight: 500,
-        }}
-      >
-        {title}
-      </p>
-      <p
-        style={{
-          fontFamily: "var(--font-mono)",
-          fontSize: "0.7rem",
-          color: "#64748b",
-          marginBottom: "1rem",
-        }}
-      >
-        Arya Krishnan
-      </p>
-
+      <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.8rem", color: "#e2e8f0", marginBottom: "0.25rem", fontWeight: 500 }}>{title}</p>
+      <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", color: "#64748b", marginBottom: "1rem" }}>Arya Krishnan</p>
       <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
         <button
           onClick={toggle}
-          style={{
-            flexShrink: 0,
-            width: "2rem",
-            height: "2rem",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: playing
-              ? "rgba(245,158,11,0.2)"
-              : "rgba(245,158,11,0.1)",
-            color: "#f59e0b",
-            borderRadius: "50%",
-            border: "none",
-            cursor: "pointer",
-            transition: "background-color 0.2s",
-          }}
+          style={{ flexShrink: 0, width: "2rem", height: "2rem", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: playing ? "rgba(245,158,11,0.2)" : "rgba(245,158,11,0.1)", color: "#f59e0b", borderRadius: "50%", border: "none", cursor: "pointer", transition: "background-color 0.2s" }}
         >
           {playing ? <LuPause size={13} /> : <LuPlay size={13} />}
         </button>
-
-        <div
-          style={{
-            flex: 1,
-            height: "4px",
-            backgroundColor: "#222",
-            borderRadius: "2px",
-            cursor: "pointer",
-            position: "relative",
-          }}
-          onClick={seek}
-        >
-          <div
-            style={{
-              height: "100%",
-              width: `${progress}%`,
-              backgroundColor: "#f59e0b",
-              borderRadius: "2px",
-              transition: "width 0.1s linear",
-            }}
-          />
+        <div style={{ flex: 1, height: "4px", backgroundColor: "#222", borderRadius: "2px", cursor: "pointer" }} onClick={seek}>
+          <div style={{ height: "100%", width: `${progress}%`, backgroundColor: "#f59e0b", borderRadius: "2px", transition: "width 0.1s linear" }} />
         </div>
-
-        <span
-          style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: "0.65rem",
-            color: "#64748b",
-            flexShrink: 0,
-            minWidth: "72px",
-            textAlign: "right",
-          }}
-        >
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", color: "#64748b", flexShrink: 0, minWidth: "72px", textAlign: "right" }}>
           {fmt(currentTime)} / {fmt(duration)}
         </span>
       </div>
@@ -188,27 +110,11 @@ export default function DJRemixes() {
     <section style={{ backgroundColor: "#111", padding: "6rem 0" }}>
       <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 1.5rem" }}>
         <FadeInView>
-          <h2
-            style={{
-              fontFamily: "var(--font-playfair)",
-              fontStyle: "italic",
-              fontSize: "clamp(2.5rem, 5vw, 4rem)",
-              color: "#f5f0e8",
-              marginBottom: "3rem",
-              letterSpacing: "-0.02em",
-            }}
-          >
+          <h2 style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", fontSize: "clamp(2.5rem, 5vw, 4rem)", color: "#f5f0e8", marginBottom: "3rem", letterSpacing: "-0.02em" }}>
             Remixes
           </h2>
         </FadeInView>
-
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: "1rem",
-          }}
-        >
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1rem" }}>
           {remixes.map((remix, i) => (
             <FadeInView key={remix.title} delay={i * 0.08}>
               <RemixPlayer title={remix.title} src={remix.src} />
