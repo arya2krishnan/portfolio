@@ -22,6 +22,8 @@ export const musicTracks: AudioTrack[] = [
   { src: `${BLOB}/hobbies/music_production/hot-remix.mp3`, title: "Hot - Remix", artist: "Arya" },
   { src: `${BLOB}/hobbies/music_production/no-guidance-afrohouse-remix.mp3`, title: "No Guidance - Afrohouse Remix", artist: "Arya" },
   { src: `${BLOB}/hobbies/music_production/yukon-remix.mp3`, title: "Yukon - Remix", artist: "Arya" },
+  { src: `${BLOB}/hobbies/music_production/swang-x-cloonee.mp3`, title: "Swang x Cloonee - Edit", artist: "Arya" },
+  { src: `${BLOB}/hobbies/music_production/fisher-x-low-life.mp3`, title: "Stay x Low Life - Edit", artist: "Arya" },
 ];
 
 // Coffee — image/video carousel with descriptions
