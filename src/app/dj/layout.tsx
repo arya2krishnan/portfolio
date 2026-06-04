@@ -15,22 +15,22 @@ const mono = JetBrains_Mono({
 const OG_IMAGE = "https://x2gu29gptmtx0gyc.public.blob.vercel-storage.com/dj/photos/4e.jpg";
 
 export const metadata: Metadata = {
-  title: "Arya — DJ | San Francisco",
+  title: "Arya — DJ",
   description:
-    "DJ Arya — 5+ years DJing private events in the Bay Area. Weddings, birthdays, themed nights. Now booking for 2026.",
+    "DJ Arya — 5+ years DJing private events. Weddings, birthdays, themed nights. Now booking for 2026.",
   openGraph: {
-    title: "Arya — DJ | San Francisco",
+    title: "Arya — DJ",
     description:
-      "5+ years DJing weddings, birthdays & themed nights in the Bay Area. Now booking for 2026.",
+      "5+ years DJing weddings, birthdays & themed nights. Now booking for 2026.",
     images: [{ url: OG_IMAGE, width: 3444, height: 4590 }],
     type: "website",
     url: "https://dj.aryakrishnan.com",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Arya — DJ | San Francisco",
+    title: "Arya — DJ",
     description:
-      "5+ years DJing weddings, birthdays & themed nights in the Bay Area. Now booking for 2026.",
+      "5+ years DJing weddings, birthdays & themed nights. Now booking for 2026.",
     images: [OG_IMAGE],
   },
 };

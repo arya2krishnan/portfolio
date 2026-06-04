@@ -96,7 +96,7 @@ export default function DJHero() {
               transition={{ duration: 0.6, delay: 0.1 }}
               style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", letterSpacing: "0.3em", color: "#f59e0b", textTransform: "uppercase", marginBottom: "1rem" }}
             >
-              DJ · San Francisco
+              DJ
             </motion.p>
 
             <motion.h1
