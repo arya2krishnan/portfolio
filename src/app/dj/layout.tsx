@@ -17,11 +17,11 @@ const OG_IMAGE = "https://x2gu29gptmtx0gyc.public.blob.vercel-storage.com/dj/pho
 export const metadata: Metadata = {
   title: "Arya — DJ",
   description:
-    "DJ Arya — 5+ years DJing private events. Weddings, birthdays, themed nights. Now booking for 2026.",
+    "DJ Arya — 5+ years DJing private events. Weddings, birthdays, themed nights. Currently booking.",
   openGraph: {
     title: "Arya — DJ",
     description:
-      "5+ years DJing weddings, birthdays & themed nights. Now booking for 2026.",
+      "5+ years DJing weddings, birthdays & themed nights. Currently booking.",
     images: [{ url: OG_IMAGE, width: 3444, height: 4590 }],
     type: "website",
     url: "https://dj.aryakrishnan.com",
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Arya — DJ",
     description:
-      "5+ years DJing weddings, birthdays & themed nights. Now booking for 2026.",
+      "5+ years DJing weddings, birthdays & themed nights. Currently booking.",
     images: [OG_IMAGE],
   },
 };

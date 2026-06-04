@@ -115,7 +115,7 @@ export default function DJHero() {
               style={{ fontFamily: "var(--font-mono)", fontSize: "clamp(0.7rem, 1.5vw, 0.85rem)", color: "#94a3b8", maxWidth: "480px", margin: "0 auto", lineHeight: 1.8 }}
             >
               5+ years DJing private events — weddings, birthdays, themed nights.
-              Currently booking for 2026.
+              Currently booking.
             </motion.p>
 
             <motion.p
