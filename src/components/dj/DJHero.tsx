@@ -90,14 +90,6 @@ export default function DJHero() {
         {/* Headline */}
         <div className="relative flex-1 flex items-center justify-center text-center px-6" style={{ zIndex: 2, minHeight: 0 }}>
           <div style={{ maxWidth: "900px" }}>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", letterSpacing: "0.3em", color: "#f59e0b", textTransform: "uppercase", marginBottom: "1rem" }}
-            >
-              DJ
-            </motion.p>
 
             <motion.h1
               initial={{ opacity: 0, y: 40 }}
